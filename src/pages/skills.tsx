@@ -1,60 +1,127 @@
+import { useEffect, useRef, useState } from "react";
 import { FaReact, FaGitAlt, FaPython, FaNodeJs } from "react-icons/fa";
 import { SiTypescript, SiTailwindcss, SiFigma, SiFastapi, SiMongodb, SiSupabase, SiCapacitor, SiSelenium } from "react-icons/si";
 
 const skills = [
-  { name: "React", icon: <FaReact className="text-teal-600 text-5xl" />, level: "Expert" },
-  { name: "TypeScript", icon: <SiTypescript className="text-blue-600 text-5xl" />, level: "Advanced" },
-  { name: "Tailwind CSS", icon: <SiTailwindcss className="text-cyan-500 text-5xl" />, level: "Expert" },
-  { name: "Python", icon: <FaPython className="text-yellow-500 text-5xl" />, level: "Advanced" },
-  { name: "FastAPI", icon: <SiFastapi className="text-teal-500 text-5xl" />, level: "Intermediate" },
-  { name: "Node.js", icon: <FaNodeJs className="text-green-600 text-5xl" />, level: "Intermediate" },
-  { name: "Supabase", icon: <SiSupabase className="text-green-500 text-5xl" />, level: "Advanced" },
-  { name: "MongoDB", icon: <SiMongodb className="text-green-700 text-5xl" />, level: "Intermediate" },
-  { name: "Capacitor", icon: <SiCapacitor className="text-blue-500 text-5xl" />, level: "Intermediate" },
-  { name: "Selenium", icon: <SiSelenium className="text-gray-600 text-5xl" />, level: "Intermediate" },
-  { name: "Figma", icon: <SiFigma className="text-purple-600 text-5xl" />, level: "Advanced" },
-  { name: "Git", icon: <FaGitAlt className="text-orange-600 text-5xl" />, level: "Expert" },
+  { name: "React",       Icon: FaReact,        hex: "#61DAFB", level: "Expert",       pct: 95 },
+  { name: "TypeScript",  Icon: SiTypescript,   hex: "#3178C6", level: "Advanced",     pct: 80 },
+  { name: "Tailwind",    Icon: SiTailwindcss,  hex: "#06B6D4", level: "Expert",       pct: 95 },
+  { name: "Python",      Icon: FaPython,       hex: "#F7C948", level: "Advanced",     pct: 80 },
+  { name: "FastAPI",     Icon: SiFastapi,      hex: "#009688", level: "Intermediate", pct: 65 },
+  { name: "Node.js",     Icon: FaNodeJs,       hex: "#68A063", level: "Intermediate", pct: 65 },
+  { name: "Supabase",    Icon: SiSupabase,     hex: "#3ECF8E", level: "Advanced",     pct: 80 },
+  { name: "MongoDB",     Icon: SiMongodb,      hex: "#4DB33D", level: "Intermediate", pct: 65 },
+  { name: "Capacitor",   Icon: SiCapacitor,    hex: "#119EFF", level: "Intermediate", pct: 65 },
+  { name: "Selenium",    Icon: SiSelenium,     hex: "#43B02A", level: "Intermediate", pct: 65 },
+  { name: "Figma",       Icon: SiFigma,        hex: "#A259FF", level: "Advanced",     pct: 80 },
+  { name: "Git",         Icon: FaGitAlt,       hex: "#F1502F", level: "Expert",       pct: 95 },
 ];
 
-const Skills = () => {
+const LEVEL_COLOR: Record<string, string> = {
+  Expert: "#14b8a6", Advanced: "#3b82f6", Intermediate: "#a855f7",
+};
+
+/* 3-D tilt card */
+const SkillCard = ({ s, idx }: { s: typeof skills[0]; idx: number }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [entered, setEntered] = useState(false);
+  const [barFull, setBarFull] = useState(false);
+
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) { setTimeout(() => setEntered(true), idx * 55); setTimeout(() => setBarFull(true), idx * 55 + 350); }
+    }, { threshold: 0.15 });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, [idx]);
+
+  const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const el = ref.current!;
+    const { left, top, width, height } = el.getBoundingClientRect();
+    const rx = ((e.clientY - top) / height - 0.5) * 14;
+    const ry = ((e.clientX - left) / width - 0.5) * -14;
+    el.style.transform = `perspective(600px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-6px) scale(1.02)`;
+    el.style.boxShadow = `0 20px 40px ${s.hex}18, 0 0 0 1px ${s.hex}40`;
+  };
+  const onLeave = () => {
+    const el = ref.current!;
+    el.style.transform = "perspective(600px) rotateX(0) rotateY(0) translateY(0) scale(1)";
+    el.style.boxShadow = "none";
+  };
+
   return (
-    <section id="skills" className="bg-gray-50 py-12 px-6 md:px-12 lg:px-20">
+    <div
+      ref={ref}
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+      className="relative p-6 rounded-2xl"
+      style={{
+        background: "rgba(255,255,255,0.03)",
+        border: `1px solid ${entered ? s.hex + "28" : "rgba(255,255,255,0.06)"}`,
+        opacity: entered ? 1 : 0,
+        transform: entered ? "perspective(600px) rotateX(0) rotateY(0) translateY(0) scale(1)" : "translateY(28px) scale(0.97)",
+        transition: `opacity .55s ease ${idx * 0.04}s, border-color .4s ease, box-shadow .3s ease`,
+        transformStyle: "preserve-3d",
+        willChange: "transform",
+        transitionProperty: entered ? "box-shadow, border-color" : "opacity, transform, border-color",
+      }}
+    >
+      {/* icon + badge */}
+      <div className="flex items-start justify-between mb-4">
+        <div className="w-11 h-11 rounded-xl flex items-center justify-center" style={{ background: `${s.hex}15` }}>
+          <s.Icon style={{ color: s.hex, fontSize: "22px" }} />
+        </div>
+        <span className="text-[11px] font-bold px-2.5 py-1 rounded-full" style={{ color: LEVEL_COLOR[s.level], background: `${LEVEL_COLOR[s.level]}15`, border: `1px solid ${LEVEL_COLOR[s.level]}25` }}>
+          {s.level}
+        </span>
+      </div>
+      <h3 className="text-white font-bold text-sm mb-4">{s.name}</h3>
+      {/* bar */}
+      <div>
+        <div className="flex justify-between text-xs mb-1.5">
+          <span className="text-gray-700">Proficiency</span>
+          <span style={{ color: s.hex }}>{s.pct}%</span>
+        </div>
+        <div className="h-1 rounded-full bg-white/5 overflow-hidden">
+          <div
+            className="h-full rounded-full"
+            style={{
+              width: barFull ? `${s.pct}%` : "0%",
+              background: `linear-gradient(90deg, ${s.hex}70, ${s.hex})`,
+              boxShadow: barFull ? `0 0 8px ${s.hex}60` : "none",
+              transition: "width 1.1s cubic-bezier(.4,0,.2,1) .2s, box-shadow .6s ease .8s",
+            }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const Skills = () => {
+  const [hv, setHv] = useState(false);
+  const hr = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const o = new IntersectionObserver(([e]) => { if (e.isIntersecting) setHv(true); }, { threshold: 0.2 });
+    if (hr.current) o.observe(hr.current);
+    return () => o.disconnect();
+  }, []);
+
+  return (
+    <section id="skills" className="relative py-24 px-6 md:px-12 lg:px-20 overflow-hidden" style={{ background: "#070d0d" }}>
+      <div className="absolute inset-x-0 top-0 h-px" style={{ background: "linear-gradient(90deg,transparent,rgba(20,184,166,0.18),transparent)" }} />
+
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Skills & Technologies</h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Proficient in modern development tools and frameworks
-          </p>
+        <div ref={hr} className="text-center mb-14" style={{ opacity: hv ? 1 : 0, transform: hv ? "none" : "translateY(24px)", transition: "opacity .7s ease, transform .7s ease" }}>
+          <p className="text-teal-500 text-xs font-semibold tracking-[.35em] uppercase mb-3 font-mono">Expertise</p>
+          <h2 className="text-5xl md:text-6xl font-black text-white mb-3" style={{ fontFamily: "'Georgia', serif" }}>
+            Skills &amp; <span style={{ background: "linear-gradient(135deg,#14b8a6,#0f766e)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Technologies</span>
+          </h2>
+          <p className="text-gray-600 text-base max-w-md mx-auto">Proficient in modern development tools and frameworks</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-          {skills.map((skill, index) => (
-            <div
-              key={index}
-              className="group bg-white p-8 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100"
-            >
-              <div className="flex items-center justify-between mb-4">
-                <div className="transition-transform duration-300 group-hover:scale-110">
-                  {skill.icon}
-                </div>
-                <span className="text-xs font-medium text-teal-600 bg-teal-50 px-2 py-1 rounded-full">
-                  {skill.level}
-                </span>
-              </div>
-
-              <h3 className="text-lg font-bold text-gray-900 mb-3">{skill.name}</h3>
-
-              <div className="w-full bg-gray-200 rounded-full h-2">
-                <div
-                  className={`h-2 rounded-full transition-all duration-1000 ${
-                    skill.level === 'Expert' ? 'bg-gradient-to-r from-teal-500 to-teal-600 w-full' :
-                    skill.level === 'Advanced' ? 'bg-gradient-to-r from-blue-500 to-blue-600 w-4/5' :
-                    'bg-gradient-to-r from-purple-500 to-purple-600 w-3/5'
-                  }`}
-                ></div>
-              </div>
-            </div>
-          ))}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+          {skills.map((s, i) => <SkillCard key={i} s={s} idx={i} />)}
         </div>
       </div>
     </section>

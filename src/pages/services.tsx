@@ -1,66 +1,92 @@
-import { FaCode, FaMobileAlt, FaServer, FaRobot } from 'react-icons/fa';
+import { useEffect, useRef, useState } from "react";
+import { FaCode, FaMobileAlt, FaServer, FaRobot } from "react-icons/fa";
 
-const services = [
-  {
-    icon: <FaCode className="text-6xl text-teal-600" />,
-    title: "Full-Stack Web Development",
-    description: "End-to-end web application development using React, Next.js, Node.js, and modern databases. From responsive front-end interfaces to scalable back-end APIs, cloud deployment, and performance optimization.",
-  },
-  {
-    icon: <FaMobileAlt className="text-6xl text-blue-600" />,
-    title: "Mobile App Development",
-    description: "Creating cross-platform mobile applications using React Native, Flutter, and Capacitor. Native performance with unified codebase across iOS and Android.",
-  },
-  {
-    icon: <FaServer className="text-6xl text-purple-600" />,
-    title: "Backend & API Development",
-    description: "Designing secure, efficient backend systems with Python FastAPI, Node.js, and databases like Supabase and MongoDB.",
-  },
-  {
-    icon: <FaRobot className="text-6xl text-green-600" />,
-    title: "Automation & AI Integration",
-    description: "Implementing intelligent solutions with AI, web scraping, and automation tools to streamline business processes.",
-  },
+const SERVICES = [
+  { Icon: FaCode,     title: "Full-Stack Web Dev",        desc: "End-to-end apps with React, Next.js, Node.js. Responsive UIs to scalable APIs, cloud deployment, perf optimization.", tag: "React · Node · TypeScript", hex: "#14b8a6" },
+  { Icon: FaMobileAlt,title: "Mobile Development",         desc: "Cross-platform apps via React Native, Flutter & Capacitor. Native performance across iOS & Android from one codebase.", tag: "RN · Capacitor · Expo",       hex: "#3b82f6" },
+  { Icon: FaServer,   title: "Backend & API Dev",          desc: "Secure backends with Python FastAPI & Node.js. Database design, auto-documented REST APIs, scalable architecture.",   tag: "FastAPI · Supabase · Mongo",  hex: "#a855f7" },
+  { Icon: FaRobot,    title: "Automation & AI",            desc: "Web scraping, AI integration, workflow automation. Streamline business processes and enhance app capabilities.",          tag: "Python · Selenium · AI APIs", hex: "#f59e0b" },
 ];
 
-const Services = () => {
+/* Spotlight card: a moving gradient follows the cursor */
+const ServiceCard = ({ svc, idx }: { svc: typeof SERVICES[0]; idx: number }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [entered, setEntered] = useState(false);
+  const [spot, setSpot] = useState({ x: 50, y: 50 });
+
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setTimeout(() => setEntered(true), idx * 110); }, { threshold: 0.15 });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, [idx]);
+
+  const onMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const { left, top, width, height } = ref.current!.getBoundingClientRect();
+    setSpot({ x: ((e.clientX - left) / width) * 100, y: ((e.clientY - top) / height) * 100 });
+  };
+
   return (
-    <section className="bg-white py-12 px-6 md:px-12 lg:px-20">
+    <div
+      ref={ref}
+      onMouseMove={onMove}
+      className="group relative p-8 rounded-3xl overflow-hidden"
+      style={{
+        background: "rgba(255,255,255,0.025)",
+        border: `1px solid rgba(255,255,255,0.07)`,
+        opacity: entered ? 1 : 0,
+        transform: entered ? "translateY(0)" : "translateY(36px)",
+        transition: `opacity .6s ease ${idx * .1}s, transform .6s ease ${idx * .1}s, border-color .3s ease, box-shadow .3s ease`,
+      }}
+      onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = `${svc.hex}35`; (e.currentTarget as HTMLElement).style.boxShadow = `0 30px 60px ${svc.hex}10`; }}
+      onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.07)"; (e.currentTarget as HTMLElement).style.boxShadow = "none"; }}
+    >
+      {/* spotlight */}
+      <div
+        className="absolute inset-0 opacity-0 group-hover:opacity-100 pointer-events-none"
+        style={{
+          background: `radial-gradient(200px at ${spot.x}% ${spot.y}%, ${svc.hex}12 0%, transparent 80%)`,
+          transition: "opacity .3s ease",
+        }}
+      />
+      {/* number */}
+      <div className="absolute top-5 right-6 text-6xl font-black pointer-events-none" style={{ color: svc.hex, opacity: 0.05, fontFamily: "'Georgia', serif" }}>
+        {String(idx + 1).padStart(2, "0")}
+      </div>
+      {/* icon */}
+      <div className="relative w-12 h-12 rounded-2xl flex items-center justify-center mb-5" style={{ background: `${svc.hex}14`, border: `1px solid ${svc.hex}28`, transition: "box-shadow .3s" }}>
+        <svc.Icon style={{ color: svc.hex, fontSize: "22px" }} />
+      </div>
+      <h3 className="text-white font-bold text-lg mb-2">{svc.title}</h3>
+      <p className="text-gray-500 text-sm leading-relaxed mb-5">{svc.desc}</p>
+      <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full font-mono" style={{ color: svc.hex, background: `${svc.hex}10`, border: `1px solid ${svc.hex}1e` }}>
+        <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: svc.hex }} />{svc.tag}
+      </span>
+    </div>
+  );
+};
+
+const Services = () => {
+  const [hv, setHv] = useState(false);
+  const hr = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const o = new IntersectionObserver(([e]) => { if (e.isIntersecting) setHv(true); }, { threshold: .2 });
+    if (hr.current) o.observe(hr.current);
+    return () => o.disconnect();
+  }, []);
+
+  return (
+    <section className="relative py-24 px-6 md:px-12 lg:px-20" style={{ background: "#060a0a" }}>
+      <div className="absolute inset-x-0 top-0 h-px" style={{ background: "linear-gradient(90deg,transparent,rgba(20,184,166,0.15),transparent)" }} />
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">What I Do</h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Transforming ideas into digital reality with cutting-edge technologies and innovative solutions
-          </p>
+        <div ref={hr} className="text-center mb-14" style={{ opacity: hv ? 1 : 0, transform: hv ? "none" : "translateY(24px)", transition: "opacity .7s ease, transform .7s ease" }}>
+          <p className="text-teal-500 text-xs font-semibold tracking-[.35em] uppercase mb-3 font-mono">Services</p>
+          <h2 className="text-5xl md:text-6xl font-black text-white mb-3" style={{ fontFamily: "'Georgia', serif" }}>
+            What I <span style={{ background: "linear-gradient(135deg,#14b8a6,#0f766e)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Do</span>
+          </h2>
+          <p className="text-gray-600 text-base max-w-md mx-auto">Transforming ideas into digital reality with cutting-edge technologies</p>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {services.map((service, index) => (
-            <div
-              key={index}
-              className="group relative bg-gradient-to-br from-gray-50 to-white p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 overflow-hidden"
-            >
-              {/* Background decoration */}
-              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-teal-100 to-transparent rounded-full transform translate-x-16 -translate-y-16 opacity-50"></div>
-
-              <div className="relative z-10">
-                <div className="mb-6 flex items-center">
-                  <div className="p-3 bg-teal-100 rounded-xl mr-4 group-hover:bg-teal-200 transition-colors duration-300">
-                    {service.icon}
-                  </div>
-                  <div className="w-12 h-1 bg-teal-600 rounded-full"></div>
-                </div>
-
-                <h3 className="text-2xl font-bold text-gray-900 mb-4 group-hover:text-teal-600 transition-colors duration-300">
-                  {service.title}
-                </h3>
-
-                <p className="text-gray-600 leading-relaxed">
-                  {service.description}
-                </p>
-              </div>
-            </div>
-          ))}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {SERVICES.map((svc, i) => <ServiceCard key={i} svc={svc} idx={i} />)}
         </div>
       </div>
     </section>

@@ -1,152 +1,196 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FaExternalLinkAlt } from "react-icons/fa";
 
-const projects = [
+const PROJECTS = [
   {
-    title: "Knowsy.game – Social Trivia Gaming Platform",
+    title: "Knowsy.game",
+    sub: "Social Trivia Gaming Platform",
     role: "Lead Full-Stack & Mobile Developer",
-    description: "Building a real-time multiplayer trivia game for a US-based client. Single-handedly converted the web app into Android & iOS apps using Capacitor. Implemented full end-to-end automation testing with Playwright. Built secure backend APIs with Python FastAPI + Swagger.",
-    techStack: "React + TypeScript + Vite + TailwindCSS + Supabase + Capacitor + Python FastAPI + Swagger + Playwright",
+    desc: "Real-time multiplayer trivia for a US-based client. Converted web → Android & iOS via Capacitor. E2E automation with Playwright. Secure FastAPI backend.",
+    tags: ["React", "TypeScript", "Supabase", "Capacitor", "FastAPI"],
     image: "/images/knowsy.png",
-    liveUrl: "https://knowsy.game",
+    url: "https://knowsy.game",
+    hex: "#14b8a6",
   },
   {
-    title: "PRSTC Boys Hostel – Complete Hostel Management App",
-    role: "Full-Stack Mobile Developer (Solo Founder-Developer)",
-    description: "Built entirely alone from idea to Play Store. Features separate student & admin logins with role-based dashboards, real-time attendance tracking, complaints, payments, notices, mess menu. Fully automated CI/CD pipeline with zero bugs in production.",
-    techStack: "React Native + Expo + Supabase + EAS Build",
-    image: "/images/15.jpg",
-    liveUrl: "https://play.google.com/store/apps/details?id=com.prstchostel",
+    title: "PRSTC Boys Hostel",
+    sub: "Complete Hostel Management App",
+    role: "Solo Founder-Developer",
+    desc: "Idea → Play Store solo. Role-based dashboards, real-time attendance, payments, notices & mess menu. Zero production bugs.",
+    tags: ["React Native", "Expo", "Supabase", "EAS Build"],
+    image: "/images/15.jpeg",
+    url: "https://play.google.com/store/apps/details?id=com.prstchostel",
+    hex: "#3b82f6",
   },
   {
-    title: "Xtrans Matrix – Corporate Website + Backend APIs",
+    title: "Xtrans Matrix",
+    sub: "Corporate Website + APIs",
     role: "Full-Stack Developer",
-    description: "Designed and developed the complete company website. Built and deployed REST APIs using Python FastAPI with auto-generated Swagger docs. Deployed backend on Render with proper environment variables and security.",
-    techStack: "React + TailwindCSS + Python FastAPI + Swagger + Render",
+    desc: "Full company website + REST APIs with auto-generated Swagger docs. Deployed on Render with security best practices.",
+    tags: ["React", "TailwindCSS", "FastAPI", "Render"],
     image: "/images/xtmx.png",
-    liveUrl: "https://xtransmatrix.com",
+    url: "https://xtransmatrix.com",
+    hex: "#a855f7",
   },
   {
-    title: "Darshan Singh Choudhary – Political Campaign Website",
-    role: "Front-End Developer",
-    description: "Created awareness website during election campaign. Fast, mobile-first, fully responsive design with SEO optimization. Helped reach thousands of voters with clean UI and fast loading.",
-    techStack: "React + Responsive Design + SEO Optimization",
-    image: "/images/dharshan.png",
-    liveUrl: "https://darshansinghchoudhary.org",
+    title: "E-Commerce Platform",
+    sub: "Full-Featured Online Store",
+    role: "Lead Developer",
+    desc: "Complete e-commerce solution with cart, checkout, payment gateway integration, admin dashboard, and inventory management.",
+    tags: ["React", "Node.js", "MongoDB", "Stripe", "Redux"],
+    image: "/images/ecommerce.png",
+    url: "#",
+    hex: "#f59e0b",
   },
   {
-    title: "DCOEIISC – College Official Website",
-    role: "Front-End Developer (Company Project)",
-    description: "Delivered modern, fully responsive institutional website with department pages, events, admissions section.",
-    techStack: "React",
-    image: "/images/iisc.png",
-    liveUrl: "https://dcoeiisc.com",
-  },
-  {
-    title: "AITank AI – AI Startup Landing & Product Site",
-    role: "Front-End Developer (Company Project)",
-    description: "Built professional landing and product site for AI startup. Active participant in monthly office demo events & presentations.",
-    techStack: "React",
+    title: "AI Tank Game",
+    sub: "Interactive Gaming Application",
+    role: "Solo Developer",
+    desc: "AI-powered tank battle game with smart enemy AI, multiple levels, sound effects, and responsive gameplay.",
+    tags: ["JavaScript", "HTML5 Canvas", "Game Dev", "AI"],
     image: "/images/aitank.png",
-    liveUrl: "https://aitank.ai",
+    url: "#",
+    hex: "#ec4899",
   },
   {
-    title: "Collaborative Frameworks – Founder's Personal Brand Site",
-    role: "Website Developer (Personal Help Project)",
-    description: "Built professional portfolio site for company founder.",
-    techStack: "Wix",
-    image: "/images/collaborativeframeworks.png",
-    liveUrl: "https://collaborativeframeworks.com",
-  },
-  {
-    title: "EpicQ – Freelance Client Project",
-    role: "Freelance Full-Stack Developer",
-    description: "Delivered high-performance, pixel-perfect business website.",
-    techStack: "React + Fully Responsive Design",
-    image: "/images/epicq.png",
-    liveUrl: "https://epicq.co.in",
-  },
-  {
-    title: "Warm Ambiance – Friend's Business Website",
-    role: "Website Developer (Side Project)",
-    description: "Helped friend launch online presence for home decor business.",
-    techStack: "React",
-    image: "/images/warmambiance.png",
-    liveUrl: "https://warmambiance.com",
-  },
-  {
-    title: "Python + Selenium Data Scraping Engine",
-    role: "Automation Engineer",
-    description: "Built multiple custom web scrapers for e-commerce vendors. Extract product details, prices, images, reviews automatically. Output structured data in JSON, CSV, and formatted PDFs. Used in production by company for competitor analysis.",
-    techStack: "Python + Selenium + JSON/CSV/PDF Export",
-    image: "/images/python.png",
-    liveUrl: "#", // No live URL, perhaps internal
-  },
-  {
-    title: "Personal Portfolio Website",
+    title: "EpicQ Quiz Platform",
+    sub: "Online Quiz & Assessment Tool",
     role: "Full-Stack Developer",
-    description: "A modern, responsive portfolio website showcasing my skills, projects, and experience. Built with React, TypeScript, and Tailwind CSS for optimal performance and user experience.",
-    techStack: "React + TypeScript + Tailwind CSS + Vite",
-    image: "/images/porfolio.png",
-    liveUrl: "#", // Current website
+    desc: "Quiz platform with real-time scoring, leaderboards, category filters, and detailed analytics dashboard.",
+    tags: ["React", "Firebase", "Chart.js", "TailwindCSS"],
+    image: "/images/epicq.png",
+    url: "#",
+    hex: "#22d3ee",
   },
-  
+  {
+    title: "Warm Ambiance",
+    sub: "Restaurant & Hospitality Website",
+    role: "Frontend Developer",
+    desc: "Elegant restaurant website with online reservations, menu display, gallery, and customer testimonials.",
+    tags: ["React", "TailwindCSS", "Framer Motion", "Node.js"],
+    image: "/images/warmambiance.png",
+    url: "#",
+    hex: "#14b8a6",
+  },
+  {
+    title: "Collaborative Frameworks",
+    sub: "Business Consulting Website",
+    role: "Full-Stack Developer",
+    desc: "Corporate consulting website with service listings, team profiles, contact forms, and blog integration.",
+    tags: ["React", "Next.js", "TypeScript", "CMS"],
+    image: "/images/collaborativeframeworks.png",
+    url: "#",
+    hex: "#8b5cf6",
+  },
 ];
 
-const Projects = () => {
-  const [showAll, setShowAll] = useState(false);
-  const displayedProjects = showAll ? projects : projects.slice(0, 3);
+const ProjectCard = ({ p, idx }: { p: typeof PROJECTS[0]; idx: number }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [in_, setIn] = useState(false);
+  const [hov, setHov] = useState(false);
+
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setTimeout(() => setIn(true), idx * 140); }, { threshold: 0.1 });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, [idx]);
 
   return (
-    <section id="projects" className="bg-gray-50 py-12 px-6 md:px-12 lg:px-20">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Featured Projects</h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            A curated collection of my recent work, showcasing technical expertise and innovative solutions across various domains
-          </p>
-        </div>
+    <div
+      ref={ref}
+      onMouseEnter={() => setHov(true)}
+      onMouseLeave={() => setHov(false)}
+      className="group rounded-3xl overflow-hidden"
+      style={{
+        background: "rgba(255,255,255,0.025)",
+        border: `1px solid ${hov ? p.hex + "38" : "rgba(255,255,255,0.06)"}`,
+        opacity: in_ ? 1 : 0,
+        transform: in_ ? "translateY(0)" : "translateY(44px)",
+        transition: `opacity .65s ease ${idx*.1}s, transform .65s ease ${idx*.1}s, border-color .3s, box-shadow .3s`,
+        boxShadow: hov ? `0 40px 70px ${p.hex}12` : "none",
+      }}
+    >
+      {/* image with clip-path reveal */}
+      <div className="relative overflow-hidden" style={{ height: "210px" }}>
+        <img
+          src={p.image}
+          alt={p.title}
+          className="w-full h-full object-cover"
+          style={{
+            transform: hov ? "scale(1.06)" : "scale(1)",
+            transition: "transform .6s ease",
+            filter: hov ? "brightness(0.75)" : "brightness(0.6)",
+          }}
+        />
+        <div className="absolute inset-0" style={{ background: `linear-gradient(to bottom, transparent 30%, ${p.hex}15 70%, rgba(6,10,10,0.92) 100%)` }} />
+        {p.url !== "#" && (
+          <a
+            href={p.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="absolute top-3 right-3 flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-black"
+            style={{
+              background: p.hex,
+              opacity: hov ? 1 : 0,
+              transform: hov ? "translateY(0)" : "translateY(-6px)",
+              transition: "opacity .25s ease, transform .25s ease",
+            }}
+          >
+            <FaExternalLinkAlt size={9} /> Live
+          </a>
+        )}
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {displayedProjects.map((project, index) => (
-            <div key={index} className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden transition transform hover:scale-105 hover:shadow-lg">
-              <img src={project.image} alt={project.title} className="w-full h-64 object-contain bg-gray-50" />
-              <div className="p-6">
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{project.title}</h3>
-                <span className="inline-block text-sm font-medium text-teal-600 bg-teal-50 px-3 py-1 rounded-full mb-4">
-                  {project.role}
-                </span>
-                <p className="text-gray-700 mb-4 leading-relaxed text-sm">{project.description}</p>
-                <div className="bg-gray-50 rounded-lg p-3 mb-4">
-                  <p className="text-xs font-semibold text-gray-900 mb-1">🚀 Key Technologies</p>
-                  <p className="text-xs text-gray-600 font-medium">{project.techStack}</p>
-                </div>
-                <div className="text-center">
-                  {project.liveUrl !== "#" && (
-                    <a href={project.liveUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center text-teal-600 hover:text-teal-700 font-semibold text-sm px-4 py-2 border border-teal-600 rounded-lg hover:bg-teal-600 hover:text-white transition-colors duration-200">
-                      <FaExternalLinkAlt className="mr-2" />
-                      View Live
-                    </a>
-                  )}
-                  {project.liveUrl === "#" && (
-                    <span className="inline-block text-gray-400 font-medium text-sm px-4 py-2 border border-gray-300 rounded-lg">In Development</span>
-                  )}
-                </div>
-              </div>
-            </div>
+      {/* body */}
+      <div className="p-6">
+        <h3 className="text-lg font-black text-white">{p.title}</h3>
+        <p className="text-xs mb-2" style={{ color: p.hex }}>{p.sub}</p>
+        <span className="inline-block text-xs font-semibold px-2.5 py-1 rounded-full mb-3" style={{ color: p.hex, background: `${p.hex}12`, border: `1px solid ${p.hex}22` }}>{p.role}</span>
+        <p className="text-gray-500 text-sm leading-relaxed mb-4">{p.desc}</p>
+        <div className="flex flex-wrap gap-2">
+          {p.tags.map((t, i) => (
+            <span key={i} className="text-xs px-2 py-0.5 rounded-md text-gray-500 font-mono" style={{ background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)" }}>{t}</span>
           ))}
         </div>
+      </div>
+    </div>
+  );
+};
 
-        {projects.length > 3 && (
-          <div className="text-center mt-8">
-            <button
-              onClick={() => setShowAll(!showAll)}
-              className="inline-flex items-center px-8 py-4 bg-teal-600 text-white font-semibold rounded-lg hover:bg-teal-700 transition-colors duration-300 shadow-lg"
-            >
-              {showAll ? 'View Less' : 'View More Projects'}
-            </button>
-          </div>
-        )}
+const Projects = () => {
+  const [hv, setHv] = useState(false);
+  const hr = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const o = new IntersectionObserver(([e]) => { if (e.isIntersecting) setHv(true); }, { threshold: .2 });
+    if (hr.current) o.observe(hr.current);
+    return () => o.disconnect();
+  }, []);
+
+  return (
+    <section id="projects" className="relative py-24 px-6 md:px-12 lg:px-20" style={{ background: "#070d0d" }}>
+      <div className="absolute inset-x-0 top-0 h-px" style={{ background: "linear-gradient(90deg,transparent,rgba(20,184,166,0.15),transparent)" }} />
+      <div className="max-w-7xl mx-auto">
+        <div ref={hr} className="text-center mb-14" style={{ opacity: hv ? 1 : 0, transform: hv ? "none" : "translateY(24px)", transition: "opacity .7s ease, transform .7s ease" }}>
+          <p className="text-teal-500 text-xs font-semibold tracking-[.35em] uppercase mb-3 font-mono">Portfolio</p>
+          <h2 className="text-5xl md:text-6xl font-black text-white mb-3" style={{ fontFamily: "'Georgia', serif" }}>
+            Featured <span style={{ background: "linear-gradient(135deg,#14b8a6,#0f766e)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Projects</span>
+          </h2>
+          <p className="text-gray-600 text-base max-w-lg mx-auto">A curated collection of work across web, mobile, and backend engineering</p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          {PROJECTS.map((p, i) => <ProjectCard key={i} p={p} idx={i} />)}
+        </div>
+
+        <div className="text-center mt-12">
+          <a href="/projects" className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl font-bold text-sm" style={{ color: "#14b8a6", border: "1px solid rgba(20,184,166,0.25)", transition: "background .3s, border-color .3s" }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "rgba(20,184,166,0.06)"; (e.currentTarget as HTMLElement).style.borderColor = "rgba(20,184,166,0.5)"; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "transparent"; (e.currentTarget as HTMLElement).style.borderColor = "rgba(20,184,166,0.25)"; }}
+          >
+            View All Projects
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+          </a>
+        </div>
       </div>
     </section>
   );
