@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
 const CTA = () => {
   const [hv, setHv] = useState(false);
@@ -38,11 +39,11 @@ const CTA = () => {
         </h2>
 
         <p className="text-gray-500 text-lg mb-10 max-w-xl mx-auto leading-relaxed">
-          Let's discuss your vision and how I can bring it to life with modern technology solutions.
+          Website, web app or mobile app — share your idea and I'll come back with a plan and quote within 24 hours.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <a href="/contact"
+          <Link to="/contact"
             className="group inline-flex items-center justify-center gap-2 px-10 py-4 rounded-xl font-bold text-black"
             style={{ background: "linear-gradient(135deg,#14b8a6,#0f766e)", transition: "box-shadow .3s, transform .2s" }}
             onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 0 36px rgba(20,184,166,0.5)"; (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; }}
@@ -50,15 +51,15 @@ const CTA = () => {
           >
             Get In Touch
             <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-          </a>
-          <a href="/projects"
+          </Link>
+          <Link to="/projects"
             className="inline-flex items-center justify-center gap-2 px-10 py-4 rounded-xl font-bold text-gray-400 hover:text-white"
             style={{ border: "1px solid rgba(255,255,255,0.1)", transition: "border-color .3s, color .3s, background .3s, transform .2s" }}
             onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.2)"; (e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.04)"; (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; }}
             onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.1)"; (e.currentTarget as HTMLElement).style.background = "transparent"; (e.currentTarget as HTMLElement).style.transform = "none"; }}
           >
             See My Work
-          </a>
+          </Link>
         </div>
       </div>
 

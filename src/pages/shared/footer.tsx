@@ -1,4 +1,5 @@
-import { Linkedin, Instagram, FileText, Mail, Phone, MapPin } from "lucide-react";
+import { Linkedin, Instagram, Mail, Phone, MapPin } from "lucide-react";
+import { FaGithub } from "react-icons/fa";
 
 const Footer = () => {
   return (
@@ -31,22 +32,31 @@ const Footer = () => {
               </span>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed max-w-xs">
-              Full-stack developer crafting end-to-end solutions with React, Node.js, Python, and more.
+              Full-stack &amp; mobile developer with 2+ years of experience. Available for freelance web and app projects.
             </p>
           </div>
 
           {/* Contact */}
           <div>
-            <h3 className="text-white font-semibold text-sm tracking-widest uppercase mb-5">Contact</h3>
+            <h2 className="text-white font-semibold text-sm tracking-widest uppercase mb-5">Contact</h2>
             <ul className="space-y-3">
               {[
-                { icon: Phone, text: "+91 7680872629" },
-                { icon: Mail, text: "loksai2024@gmail.com" },
-                { icon: MapPin, text: "Bangalore, Karnataka, India" },
-              ].map(({ icon: Icon, text }, i) => (
-                <li key={i} className="flex items-center gap-3 text-gray-500 text-sm">
-                  <Icon size={14} className="text-teal-500 flex-shrink-0" />
-                  {text}
+                { icon: Phone, text: "+91 7680872629", href: "tel:+917680872629" },
+                { icon: Mail, text: "loksai2024@gmail.com", href: "mailto:loksai2024@gmail.com" },
+                { icon: MapPin, text: "Bengaluru, Karnataka, India", href: undefined },
+              ].map(({ icon: Icon, text, href }, i) => (
+                <li key={i} className="text-gray-500 text-sm">
+                  {href ? (
+                    <a href={href} className="inline-flex items-center gap-3 py-1 hover:text-teal-400 transition-colors duration-300">
+                      <Icon size={14} className="text-teal-500 flex-shrink-0" />
+                      {text}
+                    </a>
+                  ) : (
+                    <span className="inline-flex items-center gap-3 py-1">
+                      <Icon size={14} className="text-teal-500 flex-shrink-0" />
+                      {text}
+                    </span>
+                  )}
                 </li>
               ))}
             </ul>
@@ -54,12 +64,14 @@ const Footer = () => {
 
           {/* Social */}
           <div>
-            <h3 className="text-white font-semibold text-sm tracking-widest uppercase mb-5">Connect</h3>
+            <h2 className="text-white font-semibold text-sm tracking-widest uppercase mb-5">Connect</h2>
             <div className="flex flex-col space-y-3">
               {[
+                { icon: FaGithub, href: "https://github.com/TLoksai", label: "GitHub", color: "#e2e8f0" },
                 { icon: Linkedin, href: "https://www.linkedin.com/in/tammineniloksai/", label: "LinkedIn", color: "#0077B5" },
                 { icon: Instagram, href: "https://www.instagram.com/loksai2002_/", label: "Instagram", color: "#E4405F" },
-                { icon: FileText, href: "/resume.pdf", label: "Resume", color: "#14b8a6" },
+                // Resume hidden for now — add public/resume.pdf, import FileText, then restore:
+                // { icon: FileText, href: "/resume.pdf", label: "Resume", color: "#14b8a6" },
               ].map(({ icon: Icon, href, label, color }, i) => (
                 <a
                   key={i}
@@ -91,7 +103,7 @@ const Footer = () => {
           <p className="text-gray-600 text-sm">© 2026 Code & Creativity by LOKSAI</p>
           <div className="flex items-center gap-1.5">
             <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
-            <span className="text-gray-600 text-xs">Available for new opportunities</span>
+            <span className="text-gray-600 text-xs">Available for freelance projects</span>
           </div>
         </div>
       </div>

@@ -1,4 +1,7 @@
-name: CI/CD Pipeline
+name: CI
+
+# The site is hosted on Netlify, which builds and deploys every push to main.
+# This workflow only verifies quality: lint, type-check + build, dependency audit and Lighthouse.
 
 on:
   push:
@@ -17,7 +20,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version: '24'
         cache: 'npm'
 
     - name: Install dependencies
@@ -26,11 +29,8 @@ jobs:
     - name: Run linter
       run: npm run lint
 
-    - name: Build project
+    - name: Type-check and build
       run: npm run build
-
-    - name: Run tests (if any)
-      run: npm test || echo "No tests defined"
 
   security-check:
     runs-on: ubuntu-latest
@@ -42,19 +42,18 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '18'
+        node-version: '24'
         cache: 'npm'
 
     - name: Install dependencies
       run: npm ci
 
-    - name: Run security audit
-      run: npm audit --audit-level moderate
+    # Audits the packages that ship to visitors. Build-only tooling (Tailwind v3's file
+    # watchers/globbers) never reaches the browser of this static site.
+    - name: Audit production dependencies
+      run: npm audit --omit=dev --audit-level=moderate
 
-    - name: Check for vulnerabilities
-      run: npm audit --audit-level moderate || true
-
-  accessibility-check:
+  lighthouse:
     runs-on: ubuntu-latest
 
     steps:
@@ -64,7 +63,7 @@ jobs:
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '20'
+        node-version: '24'
         cache: 'npm'
 
     - name: Install dependencies
@@ -73,35 +72,5 @@ jobs:
     - name: Build project
       run: npm run build
 
-    - name: Install Lighthouse CI
-      run: npm install -g @lhci/cli
-
-    - name: Run Lighthouse accessibility check
-      run: lhci autorun --config .lighthouserc.json || echo "Lighthouse check completed"
-
-  deploy:
-    needs: [build-and-test, security-check]
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
-
-    - name: Install dependencies
-      run: npm ci
-
-    - name: Build project
-      run: npm run build
-
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v3
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./dist
+    - name: Run Lighthouse CI
+      run: npx --yes @lhci/cli@0.15.1 autorun --config .lighthouserc.json

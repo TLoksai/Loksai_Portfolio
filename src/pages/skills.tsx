@@ -1,20 +1,30 @@
 import { useEffect, useRef, useState } from "react";
-import { FaReact, FaGitAlt, FaPython, FaNodeJs } from "react-icons/fa";
-import { SiTypescript, SiTailwindcss, SiFigma, SiFastapi, SiMongodb, SiSupabase, SiCapacitor, SiSelenium } from "react-icons/si";
+import { FaReact, FaGitAlt, FaPython, FaNodeJs, FaTheaterMasks } from "react-icons/fa";
+import { RiOpenaiFill } from "react-icons/ri";
+import {
+  SiTypescript, SiTailwindcss, SiFastapi, SiMongodb, SiSupabase, SiCapacitor, SiExpo, SiFirebase,
+  SiPostgresql, SiStripe, SiGithubactions, SiFlutter,
+} from "react-icons/si";
 
 const skills = [
-  { name: "React",       Icon: FaReact,        hex: "#61DAFB", level: "Expert",       pct: 95 },
-  { name: "TypeScript",  Icon: SiTypescript,   hex: "#3178C6", level: "Advanced",     pct: 80 },
-  { name: "Tailwind",    Icon: SiTailwindcss,  hex: "#06B6D4", level: "Expert",       pct: 95 },
-  { name: "Python",      Icon: FaPython,       hex: "#F7C948", level: "Advanced",     pct: 80 },
-  { name: "FastAPI",     Icon: SiFastapi,      hex: "#009688", level: "Intermediate", pct: 65 },
-  { name: "Node.js",     Icon: FaNodeJs,       hex: "#68A063", level: "Intermediate", pct: 65 },
-  { name: "Supabase",    Icon: SiSupabase,     hex: "#3ECF8E", level: "Advanced",     pct: 80 },
-  { name: "MongoDB",     Icon: SiMongodb,      hex: "#4DB33D", level: "Intermediate", pct: 65 },
-  { name: "Capacitor",   Icon: SiCapacitor,    hex: "#119EFF", level: "Intermediate", pct: 65 },
-  { name: "Selenium",    Icon: SiSelenium,     hex: "#43B02A", level: "Intermediate", pct: 65 },
-  { name: "Figma",       Icon: SiFigma,        hex: "#A259FF", level: "Advanced",     pct: 80 },
-  { name: "Git",         Icon: FaGitAlt,       hex: "#F1502F", level: "Expert",       pct: 95 },
+  { name: "React",          Icon: FaReact,         hex: "#61DAFB", level: "Expert",       pct: 95 },
+  { name: "TypeScript",     Icon: SiTypescript,    hex: "#3178C6", level: "Advanced",     pct: 85 },
+  { name: "Tailwind",       Icon: SiTailwindcss,   hex: "#06B6D4", level: "Expert",       pct: 95 },
+  { name: "React Native",   Icon: SiExpo,          hex: "#E2E8F0", level: "Advanced",     pct: 85 },
+  { name: "Capacitor",      Icon: SiCapacitor,     hex: "#119EFF", level: "Advanced",     pct: 75 },
+  { name: "Supabase",       Icon: SiSupabase,      hex: "#3ECF8E", level: "Expert",       pct: 90 },
+  { name: "PostgreSQL",     Icon: SiPostgresql,    hex: "#4169E1", level: "Advanced",     pct: 75 },
+  { name: "FastAPI",        Icon: SiFastapi,       hex: "#009688", level: "Advanced",     pct: 75 },
+  { name: "Python",         Icon: FaPython,        hex: "#F7C948", level: "Advanced",     pct: 80 },
+  { name: "Node.js",        Icon: FaNodeJs,        hex: "#68A063", level: "Intermediate", pct: 70 },
+  { name: "Firebase",       Icon: SiFirebase,      hex: "#FFCA28", level: "Advanced",     pct: 80 },
+  { name: "MongoDB",        Icon: SiMongodb,       hex: "#4DB33D", level: "Intermediate", pct: 65 },
+  { name: "Playwright",     Icon: FaTheaterMasks,  hex: "#2EAD33", level: "Advanced",     pct: 75 },
+  { name: "Stripe",         Icon: SiStripe,        hex: "#635BFF", level: "Intermediate", pct: 70 },
+  { name: "OpenAI / LLMs",  Icon: RiOpenaiFill,    hex: "#10A37F", level: "Intermediate", pct: 70 },
+  { name: "GitHub Actions", Icon: SiGithubactions, hex: "#2088FF", level: "Advanced",     pct: 75 },
+  { name: "Flutter",        Icon: SiFlutter,       hex: "#02569B", level: "Intermediate", pct: 60 },
+  { name: "Git",            Icon: FaGitAlt,        hex: "#F1502F", level: "Expert",       pct: 95 },
 ];
 
 const LEVEL_COLOR: Record<string, string> = {
@@ -117,7 +127,7 @@ const Skills = () => {
           <h2 className="text-5xl md:text-6xl font-black text-white mb-3" style={{ fontFamily: "'Georgia', serif" }}>
             Skills &amp; <span style={{ background: "linear-gradient(135deg,#14b8a6,#0f766e)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Technologies</span>
           </h2>
-          <p className="text-gray-600 text-base max-w-md mx-auto">Proficient in modern development tools and frameworks</p>
+          <p className="text-gray-600 text-base max-w-md mx-auto">The tools I ship production web &amp; mobile apps with every day</p>
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">

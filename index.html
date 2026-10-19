@@ -2,9 +2,23 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/images/logo3.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preconnect" href="https://www.googletagmanager.com" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LOKSAI</title>
+    <title>Tammineni Loksai — Full-Stack &amp; Mobile Developer | Available for Freelance</title>
+    <meta name="description" content="Full-stack &amp; mobile developer from Bengaluru with 2+ years of experience in React, TypeScript, React Native, FastAPI and Supabase. Available for freelance web and app projects." />
+    <meta name="theme-color" content="#060a0a" />
+    <link rel="canonical" href="https://loksai.netlify.app/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://loksai.netlify.app/" />
+    <meta property="og:title" content="Tammineni Loksai — Full-Stack &amp; Mobile Developer" />
+    <meta property="og:description" content="2+ years building web apps, mobile apps, APIs and automation. Available for freelance projects." />
+    <meta property="og:image" content="https://loksai.netlify.app/og-image.jpg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Tammineni Loksai — Full-Stack & Mobile Developer, available for freelance" />
+    <meta name="twitter:card" content="summary_large_image" />
 
     <!-- Google Analytics Tracking Code -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XC4SXM8JSS"></script>
@@ -16,8 +30,16 @@
       gtag('config', 'G-XC4SXM8JSS');
     </script>
   </head>
-  <body class="bg-white dark:bg-black">
+  <body style="background:#060a0a">
     <div id="root"></div>
+    <!-- Netlify Forms detection: mirrors the React contact form (src/pages/contact.tsx) -->
+    <form name="contact" data-netlify="true" netlify-honeypot="bot-field" hidden>
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <input type="text" name="subject" />
+      <textarea name="message"></textarea>
+      <input type="text" name="bot-field" />
+    </form>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

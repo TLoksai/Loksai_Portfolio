@@ -1,4 +1,9 @@
 import { useEffect, useRef, useState } from "react";
+import { AVAILABILITY, STATS } from "../data/portfolio";
+
+/* Mouse-only effects are skipped on touch screens and when the visitor prefers reduced motion */
+const hasFinePointer = () => window.matchMedia("(pointer: fine)").matches;
+const prefersReducedMotion = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 /* ─── Custom magnetic cursor ─── */
 const MagneticCursor = () => {
@@ -9,8 +14,11 @@ const MagneticCursor = () => {
   const rafRef = useRef<number>(0);
 
   useEffect(() => {
-    const move = (e: MouseEvent) => { pos.current = { x: e.clientX, y: e.clientY }; };
+    const setVisible = (v: boolean) => [dotRef, ringRef].forEach(r => { if (r.current) r.current.style.opacity = v ? "1" : "0"; });
+    const move = (e: MouseEvent) => { pos.current = { x: e.clientX, y: e.clientY }; setVisible(true); };
+    const leave = () => setVisible(false);
     window.addEventListener("mousemove", move);
+    document.documentElement.addEventListener("mouseleave", leave);
 
     const tick = () => {
       ring.current.x += (pos.current.x - ring.current.x) * 0.12;
@@ -21,13 +29,13 @@ const MagneticCursor = () => {
     };
     rafRef.current = requestAnimationFrame(tick);
 
-    return () => { window.removeEventListener("mousemove", move); cancelAnimationFrame(rafRef.current); };
+    return () => { window.removeEventListener("mousemove", move); document.documentElement.removeEventListener("mouseleave", leave); cancelAnimationFrame(rafRef.current); };
   }, []);
 
   return (
     <>
-      <div ref={dotRef} className="fixed top-0 left-0 w-2 h-2 rounded-full z-[9999] pointer-events-none" style={{ background: "#14b8a6", willChange: "transform" }} />
-      <div ref={ringRef} className="fixed top-0 left-0 w-10 h-10 rounded-full z-[9998] pointer-events-none" style={{ border: "1.5px solid rgba(20,184,166,0.5)", willChange: "transform" }} />
+      <div ref={dotRef} className="fixed top-0 left-0 w-2 h-2 rounded-full z-[9999] pointer-events-none" style={{ background: "#14b8a6", willChange: "transform", opacity: 0, transition: "opacity .2s" }} />
+      <div ref={ringRef} className="fixed top-0 left-0 w-10 h-10 rounded-full z-[9998] pointer-events-none" style={{ border: "1.5px solid rgba(20,184,166,0.5)", willChange: "transform", opacity: 0, transition: "opacity .2s" }} />
     </>
   );
 };
@@ -41,6 +49,7 @@ const CodeField = () => {
     const canvas = canvasRef.current!;
     const ctx = canvas.getContext("2d")!;
     let W = 0, H = 0, rafId = 0;
+    const still = prefersReducedMotion();
 
     const GLYPHS = [
       "const", "async", "=>", "{}", "[]", "fn()", "React",
@@ -56,7 +65,7 @@ const CodeField = () => {
     const init = () => {
       W = canvas.width = canvas.offsetWidth;
       H = canvas.height = canvas.offsetHeight;
-      glyphs = Array.from({ length: 55 }, () => ({
+      glyphs = Array.from({ length: W < 768 ? 26 : 55 }, () => ({
         x: Math.random() * W,
         y: Math.random() * H,
         vx: (Math.random() - 0.5) * 0.22,
@@ -116,7 +125,7 @@ const CodeField = () => {
           }
         }
       }
-      rafId = requestAnimationFrame(draw);
+      if (!still) rafId = requestAnimationFrame(draw);
     };
 
     const onMouse = (e: MouseEvent) => {
@@ -124,10 +133,11 @@ const CodeField = () => {
       mouseRef.current = { x: e.clientX - rect.left, y: e.clientY - rect.top };
     };
 
+    const onResize = () => { init(); if (still) draw(); };
     window.addEventListener("mousemove", onMouse);
-    window.addEventListener("resize", init);
+    window.addEventListener("resize", onResize);
     init(); draw();
-    return () => { cancelAnimationFrame(rafId); window.removeEventListener("mousemove", onMouse); window.removeEventListener("resize", init); };
+    return () => { cancelAnimationFrame(rafId); window.removeEventListener("mousemove", onMouse); window.removeEventListener("resize", onResize); };
   }, []);
 
   return <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />;
@@ -138,9 +148,11 @@ const Terminal = () => {
   const lines = [
     { text: 'const dev = "Tammineni Loksai";', color: "#e2e8f0" },
     { text: 'const role = "Full-Stack & Mobile Dev";', color: "#e2e8f0" },
-    { text: 'const stack = ["React","FastAPI","Supabase"];', color: "#94a3b8" },
-    { text: 'const builds = ["Web","Mobile","APIs","Automation"];', color: "#94a3b8" },
-    { text: "// ✓ Available for new projects", color: "#14b8a6" },
+    { text: 'const experience = "2+ years";', color: "#e2e8f0" },
+    { text: 'const stack = ["React","Expo","Supabase","FastAPI"];', color: "#94a3b8" },
+    { text: 'const builds = ["Web","Mobile","APIs","Automation","AI"];', color: "#94a3b8" },
+    { text: 'const freelance = "available";', color: "#94a3b8" },
+    { text: "// ✓ Open for freelance projects", color: "#14b8a6" },
   ];
   const [shown, setShown] = useState(0);
   const [cursor, setCursor] = useState(true);
@@ -150,7 +162,7 @@ const Terminal = () => {
       const t = setTimeout(() => setShown(s => s + 1), 480 + shown * 320);
       return () => clearTimeout(t);
     }
-  }, [shown]);
+  }, [shown, lines.length]);
 
   useEffect(() => {
     const t = setInterval(() => setCursor(c => !c), 530);
@@ -175,7 +187,7 @@ const Terminal = () => {
         <span className="ml-3 text-xs text-gray-600 font-mono tracking-wide">portfolio.ts — loksai</span>
       </div>
       {/* Code */}
-      <div className="p-5 font-mono text-sm space-y-2" style={{ minHeight: "155px" }}>
+      <div className="p-5 font-mono text-xs sm:text-sm space-y-2 overflow-x-auto" style={{ minHeight: "215px" }}>
         {lines.slice(0, shown).map((line, i) => (
           <div key={i} className="flex gap-4" style={{ animation: "termLine 0.25s ease forwards", opacity: 0 }}>
             <span className="text-gray-700 select-none text-right w-3 flex-shrink-0">{i + 1}</span>
@@ -199,7 +211,7 @@ const FloatingPills = () => {
     { label: "FastAPI", left: "88%", top: "52%", delay: "1.3s" },
     { label: "Supabase", left: "2%", top: "72%", delay: "1s" },
     { label: "Capacitor", left: "62%", top: "90%", delay: "0.4s" },
-    { label: "Selenium", left: "18%", top: "90%", delay: "1.6s" },
+    { label: "React Native", left: "18%", top: "90%", delay: "1.6s" },
   ];
   return (
     <>
@@ -226,6 +238,7 @@ const FloatingPills = () => {
 
 /* ─── Hero ─── */
 const Hero = () => {
+  const [fineCursor] = useState(() => hasFinePointer() && !prefersReducedMotion());
   const [visible, setVisible] = useState(false);
 
   useEffect(() => { const t = setTimeout(() => setVisible(true), 100); return () => clearTimeout(t); }, []);
@@ -238,12 +251,12 @@ const Hero = () => {
 
   return (
     <>
-      <MagneticCursor />
+      {fineCursor && <MagneticCursor />}
 
       <section
         id="home"
         className="relative min-h-screen flex items-center overflow-hidden"
-        style={{ background: "#060a0a", cursor: "none" }}
+        style={{ background: "#060a0a", cursor: fineCursor ? "none" : "auto" }}
       >
         {/* ambient glow */}
         <div className="absolute inset-0 pointer-events-none" style={{
@@ -260,7 +273,7 @@ const Hero = () => {
         <div className="absolute inset-0"><CodeField /></div>
 
         {/* pills */}
-        <div className="absolute inset-0 pointer-events-none"><FloatingPills /></div>
+        <div className="absolute inset-0 pointer-events-none hidden lg:block"><FloatingPills /></div>
 
         {/* content */}
         <div className="relative z-10 max-w-7xl mx-auto w-full px-6 md:px-12 lg:px-20 py-24">
@@ -272,13 +285,24 @@ const Hero = () => {
               <div style={fadeUp("0.05s")}>
                 <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-semibold tracking-widest uppercase" style={{ color: "#14b8a6", background: "rgba(20,184,166,0.08)", border: "1px solid rgba(20,184,166,0.2)" }}>
                   <span className="w-1.5 h-1.5 rounded-full bg-teal-400" style={{ animation: "badge 2s ease infinite" }} />
-                  Open to opportunities
+                  {AVAILABILITY.badge}
                 </span>
               </div>
 
               {/* name */}
               <div style={fadeUp("0.15s")}>
-                <p className="text-gray-600 text-xs tracking-[0.4em] uppercase mb-2 font-mono">Hi, I'm</p>
+                <div className="flex items-center gap-3 mb-3 lg:mb-2">
+                  {/* phones & tablets: small round photo (desktop shows the full portrait on the right) */}
+                  <img
+                    src="/images/hero-avatar.webp"
+                    alt="Tammineni Loksai"
+                    width={56}
+                    height={56}
+                    className="lg:hidden w-14 h-14 rounded-full object-cover flex-shrink-0"
+                    style={{ background: "radial-gradient(circle at 50% 35%, #0f3b36, #060a0a)", border: "2px solid rgba(20,184,166,0.5)", boxShadow: "0 0 24px rgba(20,184,166,0.25)" }}
+                  />
+                  <p className="text-gray-600 text-xs tracking-[0.4em] uppercase font-mono">Hi, I'm</p>
+                </div>
                 <h1 className="font-black leading-none" style={{ fontFamily: "'Georgia', serif" }}>
                   <span className="block text-5xl md:text-6xl lg:text-[5.5rem]" style={{ color: "#e2e8f0", letterSpacing: "-0.02em" }}>Tammineni</span>
                   <span className="block text-6xl md:text-7xl lg:text-[6.5rem]" style={{
@@ -300,12 +324,12 @@ const Hero = () => {
 
               {/* desc */}
               <p className="text-gray-500 text-sm leading-relaxed max-w-md" style={fadeUp("0.35s")}>
-                I craft high-performance web &amp; mobile products — pixel-perfect UIs, scalable APIs, and everything in between. Clean code, fast delivery, real impact.
+                2+ years shipping production web apps, Android &amp; iOS apps, APIs and automation for startups and companies. Now <span className="text-teal-400 font-semibold">available for freelance</span> web &amp; app projects.
               </p>
 
               {/* stats */}
               <div className="flex gap-8" style={fadeUp("0.45s")}>
-                {[{ n: "10+", l: "Projects" }, { n: "1+", l: "Years" }, { n: "15+", l: "Technologies" }].map((s, i) => (
+                {STATS.map((s, i) => (
                   <div key={i}>
                     <div className="text-2xl font-black" style={{ fontFamily: "'Georgia', serif", background: "linear-gradient(135deg,#2dd4bf,#14b8a6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{s.n}</div>
                     <div className="text-xs text-gray-600 tracking-widest uppercase mt-0.5">{s.l}</div>
@@ -324,23 +348,48 @@ const Hero = () => {
                   View My Work
                   <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
                 </a>
-                <a href="/contact"
+                <a href="#freelance"
                   className="inline-flex items-center gap-2 px-7 py-3.5 rounded-xl font-bold text-sm"
                   style={{ color: "#14b8a6", border: "1px solid rgba(20,184,166,0.3)", transition: "background 0.3s, border-color 0.3s, transform 0.2s" }}
                   onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.background = "rgba(20,184,166,0.07)"; el.style.borderColor = "rgba(20,184,166,0.6)"; el.style.transform = "translateY(-2px)"; }}
                   onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.background = "transparent"; el.style.borderColor = "rgba(20,184,166,0.3)"; el.style.transform = "none"; }}
                 >
-                  Get In Touch
+                  Hire Me
                 </a>
               </div>
             </div>
 
-            {/* RIGHT — terminal + mini cards */}
+            {/* RIGHT — portrait (desktop) + terminal + mini cards */}
             <div className="flex flex-col gap-4" style={fadeUp("0.3s")}>
-              <Terminal />
+              <div className="hidden lg:block relative mx-auto w-[340px]">
+                {/* glow + ring behind the cutout */}
+                <div className="absolute left-1/2 top-[6%] -translate-x-1/2 w-[330px] h-[330px] rounded-full pointer-events-none" style={{ background: "radial-gradient(circle, rgba(20,184,166,0.32) 0%, rgba(20,184,166,0.08) 55%, transparent 72%)" }} />
+                <div className="absolute left-1/2 top-[9%] -translate-x-1/2 w-[290px] h-[290px] rounded-full pointer-events-none" style={{ border: "1px solid rgba(20,184,166,0.25)", boxShadow: "inset 0 0 40px rgba(20,184,166,0.08)" }} />
+                {/* <picture> so phones/tablets (where this is hidden) never download it */}
+                <picture>
+                <source media="(min-width: 1024px)" srcSet="/images/hero-portrait.webp" />
+                <img
+                  src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw=="
+                  alt="Tammineni Loksai"
+                  width={720}
+                  height={1080}
+                  className="relative w-full h-auto select-none"
+                  draggable={false}
+                  style={{
+                    WebkitMaskImage: "linear-gradient(to bottom, #000 62%, transparent 92%)",
+                    maskImage: "linear-gradient(to bottom, #000 62%, transparent 92%)",
+                    filter: "drop-shadow(0 20px 40px rgba(0,0,0,0.5))",
+                  }}
+                />
+                </picture>
+              </div>
 
-              <div className="grid grid-cols-3 gap-3">
-                {[{ icon: "⚡", title: "Fast", sub: "Delivery" }, { icon: "🔒", title: "Secure", sub: "Code" }, { icon: "📱", title: "Mobile", sub: "First" }].map((card, i) => (
+              <div className="relative z-10 lg:-mt-44">
+                <Terminal />
+              </div>
+
+              <div className="grid grid-cols-3 gap-3 lg:hidden">
+                {[{ icon: "⚡", title: "Fast", sub: "Delivery" }, { icon: "📱", title: "Web + App", sub: "One developer" }, { icon: "🤝", title: "Freelance", sub: "Available now" }].map((card, i) => (
                   <div
                     key={i}
                     className="flex flex-col items-center py-4 rounded-xl text-center"
@@ -355,10 +404,10 @@ const Hero = () => {
                 ))}
               </div>
 
-              <div className="flex items-center gap-3 px-5 py-3 rounded-xl" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)" }}>
-                <span className="text-xs text-gray-700 uppercase tracking-widest whitespace-nowrap font-mono">Built with</span>
-                <div className="h-px flex-1 bg-white/5" />
-                {["React", "TS", "Python", "SQL"].map((t, i) => (
+              <div className="flex lg:hidden items-center gap-3 px-5 py-3 rounded-xl" style={{ background: "rgba(255,255,255,0.02)", border: "1px solid rgba(255,255,255,0.04)" }}>
+                <span className="hidden sm:inline text-xs text-gray-700 uppercase tracking-widest whitespace-nowrap font-mono">Built with</span>
+                <div className="hidden sm:block h-px flex-1 bg-white/5" />
+                {["React", "TS", "Python", "SQL", "AI"].map((t, i) => (
                   <span key={i} className="text-xs font-mono font-semibold px-2 py-0.5 rounded" style={{ color: "#14b8a6", background: "rgba(20,184,166,0.1)" }}>{t}</span>
                 ))}
               </div>

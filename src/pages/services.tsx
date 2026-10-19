@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import { FaCode, FaMobileAlt, FaServer, FaRobot } from "react-icons/fa";
 
 const SERVICES = [
-  { Icon: FaCode,     title: "Full-Stack Web Dev",        desc: "End-to-end apps with React, Next.js, Node.js. Responsive UIs to scalable APIs, cloud deployment, perf optimization.", tag: "React · Node · TypeScript", hex: "#14b8a6" },
-  { Icon: FaMobileAlt,title: "Mobile Development",         desc: "Cross-platform apps via React Native, Flutter & Capacitor. Native performance across iOS & Android from one codebase.", tag: "RN · Capacitor · Expo",       hex: "#3b82f6" },
-  { Icon: FaServer,   title: "Backend & API Dev",          desc: "Secure backends with Python FastAPI & Node.js. Database design, auto-documented REST APIs, scalable architecture.",   tag: "FastAPI · Supabase · Mongo",  hex: "#a855f7" },
-  { Icon: FaRobot,    title: "Automation & AI",            desc: "Web scraping, AI integration, workflow automation. Streamline business processes and enhance app capabilities.",          tag: "Python · Selenium · AI APIs", hex: "#f59e0b" },
+  { Icon: FaCode,     title: "Full-Stack Web Dev",        desc: "End-to-end web apps with React & TypeScript — responsive UIs, auth & roles, payments, realtime data, CI/CD and cloud deployment.", tag: "React · TypeScript · Supabase", hex: "#14b8a6" },
+  { Icon: FaMobileAlt,title: "Mobile Development",         desc: "Cross-platform apps with React Native/Expo, Capacitor or Flutter — one codebase for Android & iOS, published to the stores.", tag: "Expo · Capacitor · EAS",       hex: "#3b82f6" },
+  { Icon: FaServer,   title: "Backend & API Dev",          desc: "Secure backends with Supabase edge functions, FastAPI & Node.js. Row-level security, documented REST APIs, webhooks & integrations.",   tag: "Supabase · FastAPI · Postgres",  hex: "#a855f7" },
+  { Icon: FaRobot,    title: "Automation & AI",            desc: "LLM features & agents, web scraping, E2E and load testing, workflow automation — less manual work, more reliable apps.",          tag: "Python · Playwright · LLM APIs", hex: "#f59e0b" },
 ];
 
 /* Spotlight card: a moving gradient follows the cursor */

@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link, NavLink } from "react-router-dom";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,8 +16,12 @@ const Header = () => {
     { href: "/about", label: "About" },
     { href: "/projects", label: "Projects" },
     { href: "/skills", label: "Skills" },
+    { href: "/#freelance", label: "Hire Me" },
     { href: "/contact", label: "Contact" },
   ];
+
+  // "/#freelance" is a section, not a page — never mark it active
+  const isPage = (href: string) => !href.includes("#");
 
   return (
     <header
@@ -34,8 +39,9 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <a href="/" className="group flex items-center gap-2">
+          <Link to="/" className="group flex items-center gap-2 flex-shrink-0">
             <div
+              aria-hidden="true"
               className="w-8 h-8 rounded-lg flex items-center justify-center text-black font-black text-sm"
               style={{ background: "linear-gradient(135deg, #14b8a6, #0f766e)" }}
             >
@@ -51,28 +57,35 @@ const Header = () => {
             >
               LOKSAI
             </span>
-          </a>
+          </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden md:flex items-center gap-8">
+          <nav className="hidden lg:flex items-center gap-8" aria-label="Main">
             {navLinks.map((link) => (
-              <a
+              <NavLink
                 key={link.href}
-                href={link.href}
-                className="relative text-sm font-medium text-gray-400 hover:text-white transition-colors duration-300 group"
+                to={link.href}
+                end
+                className={({ isActive }) =>
+                  `relative text-sm font-medium whitespace-nowrap transition-colors duration-300 group ${isActive && isPage(link.href) ? "text-white" : "text-gray-400 hover:text-white"}`
+                }
               >
-                {link.label}
-                <span
-                  className="absolute -bottom-0.5 left-0 h-px bg-teal-400 w-0 group-hover:w-full transition-all duration-300"
-                />
-              </a>
+                {({ isActive }) => (
+                  <>
+                    {link.label}
+                    <span
+                      className={`absolute -bottom-0.5 left-0 h-px bg-teal-400 transition-all duration-300 ${isActive && isPage(link.href) ? "w-full" : "w-0 group-hover:w-full"}`}
+                    />
+                  </>
+                )}
+              </NavLink>
             ))}
           </nav>
 
           {/* Desktop CTA */}
-          <a
-            href="/contact"
-            className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm text-black transition-all duration-300 hover:shadow-lg"
+          <Link
+            to="/contact"
+            className="hidden lg:inline-flex items-center gap-2 px-5 py-2.5 rounded-xl font-semibold text-sm text-black whitespace-nowrap transition-all duration-300 hover:shadow-lg"
             style={{
               background: "linear-gradient(135deg, #14b8a6, #0f766e)",
               boxShadow: "0 0 0 rgba(20,184,166,0)",
@@ -81,15 +94,18 @@ const Header = () => {
             onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.boxShadow = "0 0 0 rgba(20,184,166,0)"; }}
           >
             Let's Talk
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
-          </a>
+          </Link>
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden flex flex-col gap-1.5 p-2"
+            className="lg:hidden flex flex-col gap-1.5 p-3 -mr-3"
             onClick={() => setIsOpen(!isOpen)}
+            aria-label={isOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isOpen}
+            aria-controls="mobile-nav"
           >
             <span
               className="w-5 h-0.5 bg-gray-300 transition-all duration-300"
@@ -108,34 +124,39 @@ const Header = () => {
 
         {/* Mobile nav */}
         <div
-          className="md:hidden overflow-hidden"
+          id="mobile-nav"
+          className="lg:hidden overflow-hidden"
           style={{
-            maxHeight: isOpen ? "400px" : "0",
-            transition: "max-height 0.4s ease",
+            maxHeight: isOpen ? "480px" : "0",
+            visibility: isOpen ? "visible" : "hidden",
+            transition: "max-height 0.4s ease, visibility 0.4s",
           }}
         >
-          <nav className="py-4 border-t border-white/5">
+          <nav className="py-4 border-t border-white/5" aria-label="Mobile">
             {navLinks.map((link, i) => (
-              <a
+              <NavLink
                 key={link.href}
-                href={link.href}
-                className="flex items-center py-3 text-gray-400 hover:text-teal-400 transition-colors duration-300 font-medium"
+                to={link.href}
+                end
+                className={({ isActive }) =>
+                  `flex items-center py-3 transition-colors duration-300 font-medium ${isActive && isPage(link.href) ? "text-teal-400" : "text-gray-400 hover:text-teal-400"}`
+                }
                 style={{
                   borderBottom: i < navLinks.length - 1 ? "1px solid rgba(255,255,255,0.04)" : "none",
                 }}
                 onClick={() => setIsOpen(false)}
               >
                 {link.label}
-              </a>
+              </NavLink>
             ))}
-            <a
-              href="/contact"
+            <Link
+              to="/contact"
               className="flex items-center justify-center mt-4 py-3 rounded-xl font-semibold text-black"
               style={{ background: "linear-gradient(135deg, #14b8a6, #0f766e)" }}
               onClick={() => setIsOpen(false)}
             >
               Let's Talk
-            </a>
+            </Link>
           </nav>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
 /* ── Reusable scroll reveal hook ── */
 const useReveal = (delay = 0) => {
@@ -35,8 +36,8 @@ const Counter = ({ target, suffix = "" }: { target: number; suffix?: string }) =
 
 /* ── Timeline item ── */
 const TimelineItem = ({
-  year, title, desc, accent, idx,
-}: { year: string; title: string; desc: string; accent: string; idx: number }) => {
+  year, title, desc, accent, idx, last,
+}: { year: string; title: string; desc: string; accent: string; idx: number; last: boolean }) => {
   const { ref, visible } = useReveal(idx * 120);
   return (
     <div
@@ -54,7 +55,7 @@ const TimelineItem = ({
           className="w-3 h-3 rounded-full mt-1 flex-shrink-0"
           style={{ background: accent, boxShadow: `0 0 12px ${accent}80` }}
         />
-        {idx < 3 && <div className="w-px flex-1 mt-2" style={{ background: `linear-gradient(to bottom, ${accent}40, transparent)` }} />}
+        {!last && <div className="w-px flex-1 mt-2" style={{ background: `linear-gradient(to bottom, ${accent}40, transparent)` }} />}
       </div>
       {/* content */}
       <div className="pb-10">
@@ -137,8 +138,9 @@ const Who = () => {
   const timeline = [
     { year: "2022", title: "Started Web Development", desc: "Dived into HTML/CSS/JS and fell in love with building for the web. First projects were small but the passion was massive.", accent: "#14b8a6" },
     { year: "2023", title: "React & Full-Stack Growth", desc: "Mastered React, Node.js and began building complete applications. Landed first real client projects.", accent: "#3b82f6" },
-    { year: "2024", title: "Mobile & Professional Work", desc: "Expanded into React Native & Capacitor. Shipped Knowsy.game, PRSTC Hostel App, and 8+ client websites.", accent: "#a855f7" },
-    { year: "2025", title: "Now — Building What Matters", desc: "Full-stack contractor delivering production-grade web & mobile products. Open to exciting new opportunities.", accent: "#f59e0b" },
+    { year: "Feb 2025", title: "Full-Stack Developer · Xtrans Matrix", desc: "Led the company website and careers portal, built a FastAPI + PostgreSQL careers API and the AI Tank community platform.", accent: "#a855f7" },
+    { year: "Sep 2025", title: "Full-Stack & Mobile Developer · Luverly", desc: "Joined the Knowsy team — realtime multiplayer games, multi-tenant Supabase backends, Stripe payments, Capacitor apps and 10k-user load tests.", accent: "#f59e0b" },
+    { year: "Now", title: "Open for Freelance", desc: "Building websites and apps for clients — PRSTC Hostel on Google Play, Hotel Winsar Park, EpicQ and more — and taking on new freelance projects.", accent: "#ec4899" },
   ];
 
   const values = [
@@ -151,12 +153,13 @@ const Who = () => {
   ];
 
   const expertise = [
-    { label: "Frontend Development",   pct: 95, hex: "#14b8a6" },
-    { label: "Backend / APIs",         pct: 78, hex: "#3b82f6" },
-    { label: "Mobile (RN/Capacitor)",  pct: 72, hex: "#a855f7" },
-    { label: "UI / UX Design",         pct: 80, hex: "#f59e0b" },
-    { label: "DevOps & CI/CD",         pct: 65, hex: "#22d3ee" },
-    { label: "Automation / Scraping",  pct: 75, hex: "#ec4899" },
+    { label: "Frontend (React / TS)",     pct: 95, hex: "#14b8a6" },
+    { label: "Mobile (RN / Expo / Capacitor)", pct: 85, hex: "#a855f7" },
+    { label: "Supabase & Databases",      pct: 85, hex: "#3ECF8E" },
+    { label: "Backend / APIs",            pct: 80, hex: "#3b82f6" },
+    { label: "Testing & Load Testing",    pct: 75, hex: "#22d3ee" },
+    { label: "DevOps & CI/CD",            pct: 75, hex: "#f59e0b" },
+    { label: "AI Integrations",           pct: 70, hex: "#ec4899" },
   ];
 
   return (
@@ -175,43 +178,63 @@ const Who = () => {
           style={{ opacity: hero.visible ? 1 : 0, transform: hero.visible ? "none" : "translateY(32px)", transition: "opacity .9s ease, transform .9s ease" }}
         >
           <p className="text-teal-500 text-xs font-semibold tracking-[.4em] uppercase mb-4 font-mono">Who I Am</p>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-end">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div>
               <h1 className="font-black leading-none mb-6" style={{ fontFamily: "'Georgia', serif" }}>
                 <span className="block text-5xl md:text-6xl lg:text-7xl" style={{ color: "#e2e8f0" }}>About</span>
                 <span className="block text-6xl md:text-7xl lg:text-8xl" style={{ background: "linear-gradient(120deg,#2dd4bf,#14b8a6,#0d9488)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", filter: "drop-shadow(0 0 28px rgba(20,184,166,0.3))" }}>Me</span>
               </h1>
               <p className="text-gray-400 text-lg leading-relaxed max-w-lg">
-                Passionate Full-Stack Developer from Bengaluru, crafting digital experiences that matter. I transform ideas into impactful, production-grade solutions.
+                Full-stack &amp; mobile developer from Bengaluru with 2+ years of professional experience. Currently building the Knowsy platform at Luverly, and available for freelance web and app projects.
               </p>
+
+              {/* Stats */}
+              <div className="grid grid-cols-3 gap-3 sm:gap-4 mt-10">
+                {[
+                  { n: 15, suf: "+", label: "Projects Shipped" },
+                  { n: 2,  suf: "+", label: "Years Experience" },
+                  { n: 40, suf: "+", label: "Technologies"     },
+                ].map((s, i) => (
+                  <div
+                    key={i}
+                    className="p-4 sm:p-5 rounded-2xl text-center"
+                    style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(20,184,166,0.12)" }}
+                  >
+                    <div className="text-3xl font-black mb-1" style={{ fontFamily: "'Georgia',serif", background: "linear-gradient(135deg,#2dd4bf,#14b8a6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                      <Counter target={s.n} suffix={s.suf} />
+                    </div>
+                    <div className="text-gray-600 text-xs uppercase tracking-widest">{s.label}</div>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            {/* Stats */}
-            <div className="grid grid-cols-3 gap-4">
-              {[
-                { n: 10, suf: "+", label: "Projects Shipped" },
-                { n: 1,  suf: "+", label: "Years Building"   },
-                { n: 15, suf: "+", label: "Technologies"     },
-              ].map((s, i) => (
-                <div
-                  key={i}
-                  className="p-5 rounded-2xl text-center"
-                  style={{ background: "rgba(255,255,255,0.03)", border: "1px solid rgba(20,184,166,0.12)" }}
-                >
-                  <div className="text-3xl font-black mb-1" style={{ fontFamily: "'Georgia',serif", background: "linear-gradient(135deg,#2dd4bf,#14b8a6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                    <Counter target={s.n} suffix={s.suf} />
-                  </div>
-                  <div className="text-gray-600 text-xs uppercase tracking-widest">{s.label}</div>
-                </div>
-              ))}
-            </div>
+            {/* Photo: me at work */}
+            <figure className="relative">
+              <div className="absolute -inset-6 rounded-[2.5rem] pointer-events-none" style={{ background: "radial-gradient(ellipse at 35% 40%, rgba(20,184,166,0.18), transparent 70%)" }} />
+              <img
+                srcSet="/images/scene-coding-800.webp 800w, /images/scene-coding-1280.webp 1280w"
+                sizes="(min-width: 1024px) 600px, 100vw"
+                src="/images/scene-coding-1280.webp"
+                width={1280}
+                height={853}
+                alt="Loksai coding on a laptop at night"
+                className="relative w-full h-auto rounded-3xl"
+                style={{ border: "1px solid rgba(20,184,166,0.25)", boxShadow: "0 30px 60px rgba(0,0,0,0.5), 0 0 40px rgba(20,184,166,0.08)" }}
+              />
+              <figcaption className="absolute left-4 bottom-4 inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-[11px] font-mono text-gray-200" style={{ background: "rgba(6,10,10,0.75)", border: "1px solid rgba(20,184,166,0.3)", backdropFilter: "blur(8px)" }}>
+                <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />Shipping code from Bengaluru
+              </figcaption>
+            </figure>
           </div>
 
           {/* Profile image strip */}
           <div className="mt-14 flex items-center gap-6">
             <img
-              src="/images/loksai.png"
-              alt="Loksai"
+              src="/images/avatar.webp"
+              alt="Tammineni Loksai"
+              width={80}
+              height={80}
               className="w-20 h-20 rounded-2xl object-cover"
               style={{ border: "2px solid rgba(20,184,166,0.3)", boxShadow: "0 0 30px rgba(20,184,166,0.15)" }}
             />
@@ -219,7 +242,7 @@ const Who = () => {
               <p className="text-white font-bold text-lg">Tammineni Loksai</p>
               <p className="text-teal-400 text-sm font-mono">Full-Stack &amp; Mobile Developer · Bengaluru, India</p>
               <div className="flex gap-2 mt-2">
-                {["Available for work", "Remote friendly"].map((t, i) => (
+                {["Available for freelance", "Remote friendly"].map((t, i) => (
                   <span key={i} className="text-[11px] px-2.5 py-1 rounded-full font-semibold" style={{ color: "#14b8a6", background: "rgba(20,184,166,0.1)", border: "1px solid rgba(20,184,166,0.2)" }}>
                     {i === 0 && <span className="inline-block w-1.5 h-1.5 rounded-full bg-teal-400 mr-1.5 animate-pulse" />}{t}
                   </span>
@@ -242,7 +265,7 @@ const Who = () => {
                 My <span style={{ background: "linear-gradient(135deg,#14b8a6,#0d9488)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>Timeline</span>
               </h2>
               <div>
-                {timeline.map((t, i) => <TimelineItem key={i} {...t} idx={i} />)}
+                {timeline.map((t, i) => <TimelineItem key={i} {...t} idx={i} last={i === timeline.length - 1} />)}
               </div>
             </div>
 
@@ -259,10 +282,10 @@ const Who = () => {
               {/* Story text */}
               <div className="mt-10 p-6 rounded-2xl" style={{ background: "rgba(20,184,166,0.04)", border: "1px solid rgba(20,184,166,0.12)" }}>
                 <p className="text-gray-400 text-sm leading-relaxed mb-3">
-                  My journey began with curiosity and a hunger to build. What started as tinkering with HTML evolved into building full-scale production apps used by real users every day.
+                  My journey began with curiosity and a hunger to build. What started as tinkering with HTML is now production work — realtime multiplayer games, multi-tenant backends, payments, and apps on both app stores.
                 </p>
                 <p className="text-gray-500 text-sm leading-relaxed">
-                  I believe technology should solve real problems. Every project is an opportunity to make a positive impact — through clean code, thoughtful design, and relentless iteration.
+                  I take on freelance projects for businesses that want one developer who can handle everything — design, web, mobile, backend and deployment.
                 </p>
               </div>
             </div>
@@ -289,22 +312,22 @@ const Who = () => {
       <section className="py-16 px-6 md:px-12 lg:px-20" style={{ background: "#070d0d", borderTop: "1px solid rgba(20,184,166,0.08)" }}>
         <div className="max-w-3xl mx-auto text-center">
           <h3 className="text-2xl font-black text-white mb-4" style={{ fontFamily: "'Georgia',serif" }}>Want to work together?</h3>
-          <p className="text-gray-500 mb-6">Let's build something exceptional. I'm available for freelance, contracts, and full-time roles.</p>
+          <p className="text-gray-500 mb-6">I'm available for freelance web and app projects. Tell me what you're building.</p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <a href="/contact" className="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-xl font-bold text-sm text-black"
+            <Link to="/contact" className="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-xl font-bold text-sm text-black"
               style={{ background: "linear-gradient(135deg,#14b8a6,#0f766e)", transition: "box-shadow .3s, transform .2s" }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 0 28px rgba(20,184,166,0.4)"; (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = "none"; (e.currentTarget as HTMLElement).style.transform = "none"; }}
             >
               Get In Touch
-            </a>
-            <a href="/projects" className="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-xl font-bold text-sm text-gray-400"
+            </Link>
+            <Link to="/projects" className="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-xl font-bold text-sm text-gray-400"
               style={{ border: "1px solid rgba(255,255,255,0.1)", transition: "border-color .3s, color .3s, transform .2s" }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.22)"; (e.currentTarget as HTMLElement).style.color = "#fff"; (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.1)"; (e.currentTarget as HTMLElement).style.color = "#9ca3af"; (e.currentTarget as HTMLElement).style.transform = "none"; }}
             >
               View Projects
-            </a>
+            </Link>
           </div>
         </div>
       </section>

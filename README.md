@@ -1,50 +1,80 @@
-# React + TypeScript + Vite
+# Tammineni Loksai — Portfolio
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+[![CI](https://github.com/TLoksai/Loksai_Portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/TLoksai/Loksai_Portfolio/actions/workflows/ci.yml)
 
-Currently, two official plugins are available:
+Personal portfolio of **Tammineni Loksai**, a full-stack & mobile developer from Bengaluru with 2+ years of experience shipping web apps, Android & iOS apps, APIs and automation. Available for freelance projects.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+**Live:** https://loksai.netlify.app
 
-## Expanding the ESLint configuration
+![Preview](public/og-image.jpg)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Highlights
 
-- Configure the top-level `parserOptions` property like this:
+- **Fast, single-page React app.** Client-side routing, per-page titles, scroll-to-section links and a custom 404 page.
+- **Content-driven.** Every experience entry, project, skill and freelance offer lives in one typed file: [`src/data/portfolio.ts`](src/data/portfolio.ts).
+- **Responsive.** Layouts are tuned for phones, tablets and desktops. Desktop-only photos are served through `<picture>` so phones never download them.
+- **Accessible.** Lighthouse accessibility 100, labelled form fields and icon buttons, WCAG AA text contrast, and `prefers-reduced-motion` support.
+- **Contact form on Netlify Forms.** Includes a honeypot spam trap, with no backend to maintain.
+- **Lean.** About 300 KB per page, with WebP images and fingerprinted assets cached for a year.
+- **Hardened.** Security headers (`X-Frame-Options`, HSTS, `nosniff`, `Referrer-Policy`, `Permissions-Policy`) via [`public/_headers`](public/_headers).
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Tech stack
+
+| Area | Tools |
+|---|---|
+| UI | React 18, TypeScript, Tailwind CSS 3, react-icons, lucide-react |
+| Routing | React Router 7 |
+| Build | Vite 6 |
+| Quality | ESLint (typescript-eslint), `tsc` type-check, Lighthouse CI |
+| Hosting | Netlify (static hosting, Forms, headers, SPA redirects) |
+| Analytics | Google Analytics 4 |
+
+## Getting started
+
+Requires Node.js 20 or newer (CI uses Node 24).
+
+```bash
+npm ci          # install exact versions from package-lock.json
+npm run dev     # start the dev server on http://localhost:5173
+npm run build   # type-check and build to dist/
+npm run preview # serve the production build locally
+npm run lint    # run ESLint
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## Project structure
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
 ```
+src/
+  data/portfolio.ts     # all site content: experience, projects, skills, freelance info
+  pages/                # page sections (hero, experience, projects, freelance, contact, …)
+  pages/shared/         # header and footer
+  App.tsx               # routes, per-page titles, scroll handling
+public/
+  images/               # optimised WebP photos and project screenshots
+  _headers, _redirects  # Netlify headers and SPA fallback
+  robots.txt, sitemap.xml, og-image.jpg, favicons
+```
+
+### Editing content
+
+Update [`src/data/portfolio.ts`](src/data/portfolio.ts) and the home, About, Projects and Skills pages all pick it up. To add a project, append an entry to `PROJECTS`. Set `featured: true` to show it on the home page, and put a screenshot (WebP, about 960px wide) in `public/images/projects/`.
+
+## Deployment
+
+Netlify builds and deploys every push to `main` (build command `npm run build`, publish directory `dist`).
+
+The contact form uses [Netlify Forms](https://docs.netlify.com/forms/setup/). A hidden copy of the form in `index.html` lets Netlify detect it at deploy time. Form detection and email notifications are enabled in the Netlify dashboard under **Forms**.
+
+## CI
+
+[`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs on every push and pull request:
+
+1. **Lint, type-check and build**
+2. **Production dependency audit:** `npm audit --omit=dev`
+3. **Lighthouse CI:** fails if accessibility or SEO drop below 95, or best practices below 90
+
+## Contact
+
+- Email: [loksai2024@gmail.com](mailto:loksai2024@gmail.com)
+- LinkedIn: [tammineniloksai](https://www.linkedin.com/in/tammineniloksai/)
+- GitHub: [TLoksai](https://github.com/TLoksai)
