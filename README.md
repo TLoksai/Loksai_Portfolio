@@ -6,7 +6,7 @@ Personal portfolio of **Tammineni Loksai**, a full-stack & mobile developer from
 
 **Live:** https://loksai.netlify.app
 
-![Preview](public/og-image.jpg)
+![Preview](public/og-card.jpg)
 
 ## Highlights
 
@@ -52,7 +52,7 @@ src/
 public/
   images/               # optimised WebP photos and project screenshots
   _headers, _redirects  # Netlify headers and SPA fallback
-  robots.txt, sitemap.xml, og-image.jpg, favicons
+  robots.txt, sitemap.xml, og-card.jpg (link-preview card), favicons
 ```
 
 ### Editing content
