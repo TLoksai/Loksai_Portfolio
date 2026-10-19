@@ -48,10 +48,9 @@ jobs:
     - name: Install dependencies
       run: npm ci
 
-    # Audits the packages that ship to visitors. Build-only tooling (Tailwind v3's file
-    # watchers/globbers) never reaches the browser of this static site.
-    - name: Audit production dependencies
-      run: npm audit --omit=dev --audit-level=moderate
+    # Audits everything, build tooling included
+    - name: Audit dependencies
+      run: npm audit --audit-level=moderate
 
   lighthouse:
     runs-on: ubuntu-latest

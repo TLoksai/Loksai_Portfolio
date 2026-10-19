@@ -70,7 +70,7 @@ The contact form uses [Netlify Forms](https://docs.netlify.com/forms/setup/). A 
 [`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs on every push and pull request:
 
 1. **Lint, type-check and build**
-2. **Production dependency audit:** `npm audit --omit=dev`
+2. **Dependency audit:** `npm audit` (production and build dependencies)
 3. **Lighthouse CI:** fails if accessibility or SEO drop below 95, or best practices below 90
 
 ## Contact
