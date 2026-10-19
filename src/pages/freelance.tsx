@@ -75,7 +75,7 @@ const Freelance = () => {
               <ol className="space-y-4">
                 {FREELANCE_STEPS.map((s, i) => (
                   <li key={i} className="flex gap-4">
-                    <span className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-black flex-shrink-0 font-mono" style={{ color: "#14b8a6", background: "rgba(20,184,166,0.1)", border: "1px solid rgba(20,184,166,0.22)" }}>
+                    <span className="w-7 h-7 rounded-lg flex items-center justify-center text-xs font-black shrink-0 font-mono" style={{ color: "#14b8a6", background: "rgba(20,184,166,0.1)", border: "1px solid rgba(20,184,166,0.22)" }}>
                       {i + 1}
                     </span>
                     <div>
@@ -136,7 +136,7 @@ const Freelance = () => {
               <p className="text-white font-black text-2xl md:text-3xl" style={{ fontFamily: "'Georgia', serif" }}>Have a web or app idea?</p>
               <p className="text-gray-400 text-sm md:text-base mt-2 max-w-md">Send me the details — I'll reply with a plan and quote within 24 hours.</p>
             </div>
-            <div className="relative flex flex-wrap gap-3 flex-shrink-0">
+            <div className="relative flex flex-wrap gap-3 shrink-0">
               <Link to="/contact" className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl font-bold text-sm text-black" style={{ background: "linear-gradient(135deg,#14b8a6,#0f766e)", transition: "box-shadow .3s, transform .2s" }}
                 onMouseEnter={e => { (e.currentTarget as HTMLElement).style.boxShadow = "0 0 28px rgba(20,184,166,0.4)"; (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; }}
                 onMouseLeave={e => { (e.currentTarget as HTMLElement).style.boxShadow = "none"; (e.currentTarget as HTMLElement).style.transform = "none"; }}

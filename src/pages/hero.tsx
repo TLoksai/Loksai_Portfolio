@@ -34,8 +34,8 @@ const MagneticCursor = () => {
 
   return (
     <>
-      <div ref={dotRef} className="fixed top-0 left-0 w-2 h-2 rounded-full z-[9999] pointer-events-none" style={{ background: "#14b8a6", willChange: "transform", opacity: 0, transition: "opacity .2s" }} />
-      <div ref={ringRef} className="fixed top-0 left-0 w-10 h-10 rounded-full z-[9998] pointer-events-none" style={{ border: "1.5px solid rgba(20,184,166,0.5)", willChange: "transform", opacity: 0, transition: "opacity .2s" }} />
+      <div ref={dotRef} className="fixed top-0 left-0 w-2 h-2 rounded-full z-9999 pointer-events-none" style={{ background: "#14b8a6", willChange: "transform", opacity: 0, transition: "opacity .2s" }} />
+      <div ref={ringRef} className="fixed top-0 left-0 w-10 h-10 rounded-full z-9998 pointer-events-none" style={{ border: "1.5px solid rgba(20,184,166,0.5)", willChange: "transform", opacity: 0, transition: "opacity .2s" }} />
     </>
   );
 };
@@ -180,7 +180,7 @@ const Terminal = () => {
       }}
     >
       {/* Title bar */}
-      <div className="flex items-center gap-2 px-4 py-3 border-b border-white/[0.04]" style={{ background: "rgba(255,255,255,0.02)" }}>
+      <div className="flex items-center gap-2 px-4 py-3 border-b border-white/4" style={{ background: "rgba(255,255,255,0.02)" }}>
         <div className="w-3 h-3 rounded-full" style={{ background: "#ff5f56" }} />
         <div className="w-3 h-3 rounded-full" style={{ background: "#ffbd2e" }} />
         <div className="w-3 h-3 rounded-full" style={{ background: "#27c93f" }} />
@@ -190,12 +190,12 @@ const Terminal = () => {
       <div className="p-5 font-mono text-xs sm:text-sm space-y-2 overflow-x-auto" style={{ minHeight: "215px" }}>
         {lines.slice(0, shown).map((line, i) => (
           <div key={i} className="flex gap-4" style={{ animation: "termLine 0.25s ease forwards", opacity: 0 }}>
-            <span className="text-gray-700 select-none text-right w-3 flex-shrink-0">{i + 1}</span>
+            <span className="text-gray-700 select-none text-right w-3 shrink-0">{i + 1}</span>
             <span style={{ color: line.color }}>{line.text}</span>
           </div>
         ))}
         <div className="flex gap-4">
-          <span className="text-gray-700 select-none text-right w-3 flex-shrink-0">{shown + 1}</span>
+          <span className="text-gray-700 select-none text-right w-3 shrink-0">{shown + 1}</span>
           <span style={{ color: "#14b8a6" }}>{cursor ? "▋" : "\u00A0"}</span>
         </div>
       </div>
@@ -298,7 +298,7 @@ const Hero = () => {
                     alt="Tammineni Loksai"
                     width={56}
                     height={56}
-                    className="lg:hidden w-14 h-14 rounded-full object-cover flex-shrink-0"
+                    className="lg:hidden w-14 h-14 rounded-full object-cover shrink-0"
                     style={{ background: "radial-gradient(circle at 50% 35%, #0f3b36, #060a0a)", border: "2px solid rgba(20,184,166,0.5)", boxShadow: "0 0 24px rgba(20,184,166,0.25)" }}
                   />
                   <p className="text-gray-600 text-xs tracking-[0.4em] uppercase font-mono">Hi, I'm</p>
@@ -316,7 +316,7 @@ const Hero = () => {
 
               {/* role */}
               <div style={fadeUp("0.25s")} className="flex items-center gap-3">
-                <div className="h-px w-8 flex-shrink-0" style={{ background: "rgba(20,184,166,0.5)" }} />
+                <div className="h-px w-8 shrink-0" style={{ background: "rgba(20,184,166,0.5)" }} />
                 <span className="text-gray-400 text-base md:text-lg font-light tracking-wide" style={{ fontFamily: "'Courier New', monospace" }}>
                   Full-Stack &amp; Mobile Developer
                 </span>
@@ -408,7 +408,7 @@ const Hero = () => {
                 <span className="hidden sm:inline text-xs text-gray-700 uppercase tracking-widest whitespace-nowrap font-mono">Built with</span>
                 <div className="hidden sm:block h-px flex-1 bg-white/5" />
                 {["React", "TS", "Python", "SQL", "AI"].map((t, i) => (
-                  <span key={i} className="text-xs font-mono font-semibold px-2 py-0.5 rounded" style={{ color: "#14b8a6", background: "rgba(20,184,166,0.1)" }}>{t}</span>
+                  <span key={i} className="text-xs font-mono font-semibold px-2 py-0.5 rounded-sm" style={{ color: "#14b8a6", background: "rgba(20,184,166,0.1)" }}>{t}</span>
                 ))}
               </div>
             </div>

@@ -48,12 +48,12 @@ const Footer = () => {
                 <li key={i} className="text-gray-500 text-sm">
                   {href ? (
                     <a href={href} className="inline-flex items-center gap-3 py-1 hover:text-teal-400 transition-colors duration-300">
-                      <Icon size={14} className="text-teal-500 flex-shrink-0" />
+                      <Icon size={14} className="text-teal-500 shrink-0" />
                       {text}
                     </a>
                   ) : (
                     <span className="inline-flex items-center gap-3 py-1">
-                      <Icon size={14} className="text-teal-500 flex-shrink-0" />
+                      <Icon size={14} className="text-teal-500 shrink-0" />
                       {text}
                     </span>
                   )}

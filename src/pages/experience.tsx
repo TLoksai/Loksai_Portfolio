@@ -15,7 +15,7 @@ const RoleCard = ({ r, idx }: { r: typeof EXPERIENCE[0]; idx: number }) => {
   return (
     <div ref={ref} className="relative flex gap-5 md:gap-8">
       {/* rail */}
-      <div className="hidden sm:flex flex-col items-center flex-shrink-0 pt-7">
+      <div className="hidden sm:flex flex-col items-center shrink-0 pt-7">
         <div className="w-3.5 h-3.5 rounded-full" style={{ background: r.hex, boxShadow: `0 0 14px ${r.hex}90` }} />
         {idx < EXPERIENCE.length - 1 && <div className="w-px flex-1 mt-2" style={{ background: `linear-gradient(to bottom, ${r.hex}50, transparent)` }} />}
       </div>
@@ -48,7 +48,7 @@ const RoleCard = ({ r, idx }: { r: typeof EXPERIENCE[0]; idx: number }) => {
         <ul className="space-y-2 mb-5">
           {r.points.map((p, i) => (
             <li key={i} className="flex gap-3 text-sm text-gray-400 leading-relaxed">
-              <span className="mt-2 w-1 h-1 rounded-full flex-shrink-0" style={{ background: r.hex }} />
+              <span className="mt-2 w-1 h-1 rounded-full shrink-0" style={{ background: r.hex }} />
               {p}
             </li>
           ))}

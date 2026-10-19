@@ -59,7 +59,7 @@ const ServiceCard = ({ svc, idx }: { svc: typeof SERVICES[0]; idx: number }) => 
       <h3 className="text-white font-bold text-lg mb-2">{svc.title}</h3>
       <p className="text-gray-500 text-sm leading-relaxed mb-5">{svc.desc}</p>
       <span className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full font-mono" style={{ color: svc.hex, background: `${svc.hex}10`, border: `1px solid ${svc.hex}1e` }}>
-        <span className="w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: svc.hex }} />{svc.tag}
+        <span className="w-1.5 h-1.5 rounded-full shrink-0" style={{ background: svc.hex }} />{svc.tag}
       </span>
     </div>
   );

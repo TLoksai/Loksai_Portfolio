@@ -50,9 +50,9 @@ const TimelineItem = ({
       }}
     >
       {/* line + dot */}
-      <div className="flex flex-col items-center flex-shrink-0">
+      <div className="flex flex-col items-center shrink-0">
         <div
-          className="w-3 h-3 rounded-full mt-1 flex-shrink-0"
+          className="w-3 h-3 rounded-full mt-1 shrink-0"
           style={{ background: accent, boxShadow: `0 0 12px ${accent}80` }}
         />
         {!last && <div className="w-px flex-1 mt-2" style={{ background: `linear-gradient(to bottom, ${accent}40, transparent)` }} />}

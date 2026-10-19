@@ -42,7 +42,7 @@ const Field = ({
           required={required}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
-          className="w-full rounded-xl pt-6 pb-3 px-4 bg-transparent text-white text-sm resize-none outline-none"
+          className="w-full rounded-xl pt-6 pb-3 px-4 bg-transparent text-white text-sm resize-none outline-hidden"
           style={{
             background: focused ? "rgba(20,184,166,0.04)" : "rgba(255,255,255,0.03)",
             border: `1px solid ${focused ? "rgba(20,184,166,0.5)" : "rgba(255,255,255,0.08)"}`,
@@ -60,7 +60,7 @@ const Field = ({
           required={required}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
-          className="w-full rounded-xl pt-6 pb-3 px-4 bg-transparent text-white text-sm outline-none"
+          className="w-full rounded-xl pt-6 pb-3 px-4 bg-transparent text-white text-sm outline-hidden"
           style={{
             background: focused ? "rgba(20,184,166,0.04)" : "rgba(255,255,255,0.03)",
             border: `1px solid ${focused ? "rgba(20,184,166,0.5)" : "rgba(255,255,255,0.08)"}`,
@@ -106,7 +106,7 @@ const InfoCard = ({ icon, title, value, href, hex, idx }: { icon: string; title:
         boxShadow: hov ? `0 12px 28px ${hex}10` : "none",
       }}
     >
-      <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl flex-shrink-0" style={{ background: `${hex}15`, border: `1px solid ${hex}25` }}>
+      <div className="w-11 h-11 rounded-xl flex items-center justify-center text-xl shrink-0" style={{ background: `${hex}15`, border: `1px solid ${hex}25` }}>
         {icon}
       </div>
       <div>

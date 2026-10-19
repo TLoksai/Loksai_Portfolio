@@ -22,7 +22,7 @@ Personal portfolio of **Tammineni Loksai**, a full-stack & mobile developer from
 
 | Area | Tools |
 |---|---|
-| UI | React 18, TypeScript, Tailwind CSS 3, react-icons, lucide-react |
+| UI | React 18, TypeScript, Tailwind CSS 4, react-icons, lucide-react |
 | Routing | React Router 7 |
 | Build | Vite 6 |
 | Quality | ESLint (typescript-eslint), `tsc` type-check, Lighthouse CI |

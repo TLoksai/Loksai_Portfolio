@@ -39,7 +39,7 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-6 md:px-12 lg:px-20">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="group flex items-center gap-2 flex-shrink-0">
+          <Link to="/" className="group flex items-center gap-2 shrink-0">
             <div
               aria-hidden="true"
               className="w-8 h-8 rounded-lg flex items-center justify-center text-black font-black text-sm"
