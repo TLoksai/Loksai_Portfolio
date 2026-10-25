@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { RESUME_URL } from "../data/portfolio";
 
 /* ── Reusable scroll reveal hook ── */
 const useReveal = (delay = 0) => {
@@ -138,8 +139,9 @@ const Who = () => {
   const timeline = [
     { year: "2022", title: "Started Web Development", desc: "Dived into HTML/CSS/JS and fell in love with building for the web. First projects were small but the passion was massive.", accent: "#14b8a6" },
     { year: "2023", title: "React & Full-Stack Growth", desc: "Mastered React, Node.js and began building complete applications. Landed first real client projects.", accent: "#3b82f6" },
-    { year: "Feb 2025", title: "Full-Stack Developer · Xtrans Matrix", desc: "Led the company website and careers portal, built a FastAPI + PostgreSQL careers API and the AI Tank community platform.", accent: "#a855f7" },
-    { year: "Sep 2025", title: "Full-Stack & Mobile Developer · Luverly", desc: "Joined the Knowsy team — realtime multiplayer games, multi-tenant Supabase backends, Stripe payments, Capacitor apps and 10k-user load tests.", accent: "#f59e0b" },
+    { year: "2024", title: "B.Tech Graduate · Atria Institute of Technology", desc: "Graduated in Electronics & Telecommunication Engineering in Bengaluru, already building full-stack projects on the side.", accent: "#22d3ee" },
+    { year: "Nov 2024", title: "Full-Stack Developer · XTMX", desc: "Joined Xtrasmatrix Consulting (XTMX) right after college as the first developer — company website and careers portal, a FastAPI + PostgreSQL careers API and the AI Tank platform.", accent: "#a855f7" },
+    { year: "Sep 2025", title: "Lead Developer · Knowsy (client project)", desc: "Realtime multiplayer games, a multi-tenant Supabase platform, Stripe payments, Capacitor apps and 10k-user load tests for a US-based client.", accent: "#f59e0b" },
     { year: "Now", title: "Open for Freelance", desc: "Building websites and apps for clients — PRSTC Hostel on Google Play, Hotel Winsar Park, EpicQ and more — and taking on new freelance projects.", accent: "#ec4899" },
   ];
 
@@ -185,7 +187,7 @@ const Who = () => {
                 <span className="block text-6xl md:text-7xl lg:text-8xl" style={{ background: "linear-gradient(120deg,#2dd4bf,#14b8a6,#0d9488)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", filter: "drop-shadow(0 0 28px rgba(20,184,166,0.3))" }}>Me</span>
               </h1>
               <p className="text-gray-400 text-lg leading-relaxed max-w-lg">
-                Full-stack &amp; mobile developer from Bengaluru with 2+ years of professional experience. Currently building the Knowsy platform at Luverly, and available for freelance web and app projects.
+                Full-stack &amp; mobile developer from Bengaluru with 2+ years of professional experience. Currently a Full-Stack Developer at Xtrasmatrix Consulting (XTMX), and available for freelance web and app projects.
               </p>
 
               {/* Stats */}
@@ -328,6 +330,14 @@ const Who = () => {
             >
               View Projects
             </Link>
+            <a href={RESUME_URL} download="Tammineni_Loksai_Resume.pdf" className="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-xl font-bold text-sm"
+              style={{ color: "#14b8a6", border: "1px solid rgba(20,184,166,0.3)", transition: "background .3s, border-color .3s, transform .2s" }}
+              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "rgba(20,184,166,0.07)"; (e.currentTarget as HTMLElement).style.borderColor = "rgba(20,184,166,0.6)"; (e.currentTarget as HTMLElement).style.transform = "translateY(-2px)"; }}
+              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "transparent"; (e.currentTarget as HTMLElement).style.borderColor = "rgba(20,184,166,0.3)"; (e.currentTarget as HTMLElement).style.transform = "none"; }}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v12m0 0l-4-4m4 4l4-4M4 20h16" /></svg>
+              Download Resume
+            </a>
           </div>
         </div>
       </section>

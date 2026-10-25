@@ -15,49 +15,38 @@ export const STATS = [
   { n: "1k+", l: "Commits" },
 ];
 
+/* ── Resume (keep in sync with the PDF in public/resume/) ── */
+export const RESUME_URL = "/resume/Tammineni_Loksai_Resume.pdf";
+
 /* ── Experience (newest first) ── */
 export const EXPERIENCE = [
   {
-    role: "Full-Stack & Mobile Developer",
-    company: "Luverly",
-    kind: "Knowsy products",
-    period: "Sep 2025 – Present",
+    role: "Full-Stack Developer",
+    company: "Xtrasmatrix Consulting (XTMX)",
+    kind: "Full-time",
+    period: "Nov 2024 – Present",
     hex: "#14b8a6",
     points: [
-      "Core developer on Knowsy Knows (~680 commits) — a multi-tenant brand-engagement platform on Supabase with row-level security, ~70 edge functions, realtime leaderboards and Cloudflare Workers tenant routing.",
-      "Built “Konnect”, a realtime multiplayer party game (lobbies, rounds, host hand-over), AI-suggested topics, and the Capacitor iOS/Android app shells.",
-      "Top contributor on knowsy.game — Stripe checkout & webhooks, Shiprocket shipping, a Shopify store proxy on Cloud Run and OpenAI-powered AI players.",
-      "Wrote real-browser load tests (10 → 10k users) and k6 scenarios, set up the Playwright E2E suite, and shipped v1.2/1.3 of the original Flutter app.",
+      "Joined as the company's first developer and built the company website and careers portal from scratch across two versions (90+ commits) — services, industries, case studies, a job portal and admin dashboards.",
+      "Built a FastAPI + PostgreSQL API for job applications with resume upload, email notifications and Swagger/OpenAPI docs.",
+      "Developed the AI Tank learning-community platform (courses, events, admin) and its FastAPI + MongoDB OTP auth service.",
+      "Set up CI/CD pipelines, domains and production monitoring; turned stakeholder requirements into features and onboarded new developers.",
     ],
-    stack: ["React", "TypeScript", "Supabase", "Deno", "Capacitor", "Cloudflare Workers", "Stripe", "OpenAI", "Playwright", "k6", "Flutter"],
+    stack: ["React", "TypeScript", "Tailwind", "Firebase", "FastAPI", "PostgreSQL", "MongoDB", "Python", "Selenium"],
   },
   {
-    role: "Freelance Developer",
+    role: "Freelance Full-Stack & Mobile Developer",
     company: "Independent",
     kind: "Client projects",
     period: "Mar 2025 – Present",
     hex: "#a855f7",
     points: [
-      "Deliver web and mobile projects end-to-end for small businesses — scoping, build, deployment and handover.",
+      "Deliver web and mobile projects end-to-end for clients — scoping, build, deployment and handover.",
       "PRSTC Hostel — an Expo + Supabase hostel-management app built solo and published on Google Play.",
       "Websites for EpicQ (Agile training), Darshan Singh Choudhary (bilingual English/Hindi) and a Hotel Winsar Park rebuild with an admin CMS.",
       "A Telegram AI agent that reads receipts with a vision LLM and logs expenses to Google Sheets.",
     ],
     stack: ["React Native", "Expo", "React", "Supabase", "Tailwind", "i18next", "Python", "Groq"],
-  },
-  {
-    role: "Full-Stack Developer",
-    company: "Xtrans Matrix",
-    kind: "AI data & technology services",
-    period: "Feb 2025 – Sep 2025",
-    hex: "#3b82f6",
-    points: [
-      "Lead developer on the company website across two versions (~90 commits) — services, industries, case studies, a careers job portal and admin submission dashboards.",
-      "Built a FastAPI + PostgreSQL API for career applications with resume upload and email notifications.",
-      "Built the AI Tank community platform (courses, events, admin) with a FastAPI + MongoDB OTP auth service.",
-      "Python scrapers for product-catalogue data, plus work on an internal HR attendance dashboard (FastAPI + Google Sheets).",
-    ],
-    stack: ["React", "TypeScript", "Tailwind", "GSAP", "FastAPI", "PostgreSQL", "MongoDB", "Firebase", "Python"],
   },
 ];
 
@@ -83,7 +72,7 @@ export const PROJECTS: Project[] = [
   {
     title: "Knowsy Knows",
     sub: "Brand Engagement & Contest Platform",
-    role: "Core Developer · Luverly",
+    role: "Lead Developer · Client project",
     desc: "Platform where brands run ranking contests and live party games for customers, fans and employees. Built the realtime Konnect game, AI topic suggestions and Capacitor iOS/Android apps on a multi-tenant Supabase backend.",
     tags: ["React 19", "TypeScript", "Supabase", "Edge Functions", "Capacitor", "Cloudflare Workers", "OpenAI"],
     image: "/images/projects/knowsyknows.webp",
@@ -96,7 +85,7 @@ export const PROJECTS: Project[] = [
   {
     title: "Knowsy.game",
     sub: "Social Ranking & Trivia Game",
-    role: "Top Contributor · Luverly",
+    role: "Lead Full-Stack & Mobile Developer · Client project",
     desc: "Multiplayer “how well do you know your friends” game with white-label team pages. Added Stripe checkout & webhooks, Shiprocket shipping, a Shopify store proxy on Cloud Run, AI players and k6 load tests.",
     tags: ["React", "TypeScript", "Supabase", "Stripe", "Cloud Run", "OpenAI", "k6"],
     image: "/images/projects/knowsy.webp",
@@ -168,7 +157,7 @@ export const PROJECTS: Project[] = [
   {
     title: "Xtrans Matrix",
     sub: "Company Website, Careers Portal & API",
-    role: "Full-Stack Developer · Xtrans Matrix",
+    role: "Full-Stack Developer · XTMX",
     desc: "Lead developer on the company site — services, industries, case studies, careers job portal and admin dashboards — plus a FastAPI + PostgreSQL API for job applications with resume upload.",
     tags: ["React", "TypeScript", "Tailwind", "GSAP", "FastAPI", "PostgreSQL"],
     image: "/images/projects/xtmx.webp",
@@ -215,7 +204,7 @@ export const PROJECTS: Project[] = [
   {
     title: "Contest Load Testing",
     sub: "Real-Browser Load & E2E Testing",
-    role: "QA Automation · Luverly",
+    role: "QA Automation · Knowsy (client project)",
     desc: "Load tests that drive real browsers through signup, lobby, topic-drop and leaderboard spikes from 10 to 10k users, reporting p50/p95/p99 latency — plus the Playwright E2E suite setup for Knowsy.",
     tags: ["Playwright", "Node.js", "TypeScript", "Express"],
     hex: "#3b82f6",

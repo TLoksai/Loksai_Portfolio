@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { RESUME_URL } from "../data/portfolio";
 
 /* Netlify Forms — a matching static form lives in index.html so Netlify detects it at deploy */
 const FORM_NAME = "contact";
@@ -258,8 +259,7 @@ const Contact = () => {
                 <SocialBtn label="LinkedIn" icon="💼" href="https://www.linkedin.com/in/tammineniloksai/" hex="#0077b5" />
                 <SocialBtn label="Instagram" icon="📸" href="https://www.instagram.com/loksai2002_/" hex="#e4405f" />
                 <SocialBtn label="WhatsApp" icon="💬" href="https://wa.me/917680872629" hex="#25D366" />
-                {/* Resume hidden for now — add public/resume.pdf, then restore:
-                <SocialBtn label="Resume" icon="📄" href="/resume.pdf" hex="#14b8a6" /> */}
+                <SocialBtn label="Resume (PDF)" icon="📄" href={RESUME_URL} hex="#14b8a6" />
               </div>
             </div>
           </div>

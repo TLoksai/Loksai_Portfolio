@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { AVAILABILITY, STATS } from "../data/portfolio";
+import { AVAILABILITY, RESUME_URL, STATS } from "../data/portfolio";
 
 /* Mouse-only effects are skipped on touch screens and when the visitor prefers reduced motion */
 const hasFinePointer = () => window.matchMedia("(pointer: fine)").matches;
@@ -357,6 +357,14 @@ const Hero = () => {
                   Hire Me
                 </a>
               </div>
+
+              <a href={RESUME_URL} download="Tammineni_Loksai_Resume.pdf"
+                className="inline-flex items-center gap-2 py-2 text-sm font-semibold text-gray-400 hover:text-teal-400 transition-colors"
+                style={fadeUp("0.65s")}
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v12m0 0l-4-4m4 4l4-4M4 20h16" /></svg>
+                Download resume (PDF)
+              </a>
             </div>
 
             {/* RIGHT — portrait (desktop) + terminal + mini cards */}

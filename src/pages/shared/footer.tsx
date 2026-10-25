@@ -1,5 +1,6 @@
-import { Linkedin, Instagram, Mail, Phone, MapPin } from "lucide-react";
+import { Linkedin, Instagram, Mail, Phone, MapPin, FileText } from "lucide-react";
 import { FaGithub } from "react-icons/fa";
+import { RESUME_URL } from "../../data/portfolio";
 
 const Footer = () => {
   return (
@@ -70,8 +71,7 @@ const Footer = () => {
                 { icon: FaGithub, href: "https://github.com/TLoksai", label: "GitHub", color: "#e2e8f0" },
                 { icon: Linkedin, href: "https://www.linkedin.com/in/tammineniloksai/", label: "LinkedIn", color: "#0077B5" },
                 { icon: Instagram, href: "https://www.instagram.com/loksai2002_/", label: "Instagram", color: "#E4405F" },
-                // Resume hidden for now — add public/resume.pdf, import FileText, then restore:
-                // { icon: FileText, href: "/resume.pdf", label: "Resume", color: "#14b8a6" },
+                { icon: FileText, href: RESUME_URL, label: "Resume (PDF)", color: "#14b8a6" },
               ].map(({ icon: Icon, href, label, color }, i) => (
                 <a
                   key={i}
